@@ -198,6 +198,18 @@ export const InformationCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (p
 
 export const BeakerIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.037-.502.068-.752.098m.752-.098a2.25 2.25 0 012.25 2.25v5.714a2.25 2.25 0 00.659 1.591L19.5 14.5M21 18h-3.375m0 0h-3.375m3.375 0V15m0 3h3.375M3 18h3.375m0 0h3.375m-3.375 0V15m0 3H3" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 7.5l.41-1.64a2 2 0 011.98-1.49h.22a2 2 0 011.98 1.5l.41 1.64m-3 .01H12m0 0h1.59M12 7.5v9.57m-3.41-5.11L5.59 7.5M15.41 12l2-4.5m-5.82 9.57L6.59 14.5M17.41 14.5L12 21.97m0 0L6.59 14.5M12 21.97l5.41-7.47" />
+    </svg>
+);
+
+export const WrenchScrewdriverIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.83-5.83M11.42 15.17l-4.24-4.24a5.25 5.25 0 00-7.42 0 5.25 5.25 0 000 7.42l4.24 4.24m6.18-6.18L15.17 11.42m0 0l-4.24-4.24a5.25 5.25 0 00-7.42 0 5.25 5.25 0 000 7.42l4.24 4.24" />
+    </svg>
+);
+
+export const CalculatorIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-4.5 .75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm-2.25-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm-2.25-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm-2.25-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zM4.5 6.75h15A2.25 2.25 0 0121.75 9v10.5A2.25 2.25 0 0119.5 21.75h-15A2.25 2.25 0 012.25 19.5V9A2.25 2.25 0 014.5 6.75z" />
     </svg>
 );

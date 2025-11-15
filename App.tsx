@@ -8,6 +8,8 @@ import DisciplineBrowser from './components/DisciplineBrowser';
 import Certificate from './components/Certificate';
 import ChapterBrowser from './components/ChapterBrowser';
 import LessonBrowser from './components/LessonBrowser';
+import UnitConverter from './components/UnitConverter';
+import LoadCalculator from './components/LoadCalculator';
 import { disciplines } from './constants';
 import type { Discipline, Lesson, SearchResult, Level, Module } from './types';
 import { useProgress } from './hooks/useProgress';
@@ -27,7 +29,7 @@ const LoadingScreen: React.FC = () => (
   </div>
 );
 
-type ViewMode = 'BROWSE' | 'LEARN' | 'CERTIFICATE' | 'CHAPTER_BROWSE' | 'LESSON_BROWSE';
+type ViewMode = 'BROWSE' | 'LEARN' | 'CERTIFICATE' | 'CHAPTER_BROWSE' | 'LESSON_BROWSE' | 'TOOLS_UNIT_CONVERTER' | 'TOOLS_LOAD_CALCULATOR';
 
 const App: React.FC = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -106,12 +108,15 @@ const App: React.FC = () => {
     setSelectedDiscipline(offlineDiscipline);
     setSelectedChapter(null);
     setSelectedModule(null);
+    setSelectedLesson(null);
+
 
     if (discipline.id === 'civil-engineering') {
         setViewMode('CHAPTER_BROWSE');
     } else {
         const firstLesson = offlineDiscipline.levels[0].modules[0].lessons[0];
         setSelectedLesson(firstLesson);
+        setSelectedModule(offlineDiscipline.levels[0].modules[0]);
         setLastViewed(offlineDiscipline.id, firstLesson.id);
         setViewMode('LEARN');
     }
@@ -142,8 +147,10 @@ const App: React.FC = () => {
         setSelectedChapter(result.level);
         setSelectedModule(result.module);
     } else {
-        setSelectedChapter(null);
-        setSelectedModule(null);
+        // For non-civil, we need to find the module and chapter from the lesson
+        const foundLevel = offlineDiscipline.levels.find(l => l.modules.some(m => m.id === result.module.id));
+        setSelectedChapter(foundLevel || null);
+        setSelectedModule(result.module);
     }
     
     setSelectedLesson(result.lesson);
@@ -227,6 +234,10 @@ const App: React.FC = () => {
         return selectedDiscipline ? (
           <Certificate disciplineName={selectedDiscipline.name} onGoHome={handleGoHome} />
         ) : null;
+      case 'TOOLS_UNIT_CONVERTER':
+        return <UnitConverter onGoHome={handleGoHome} />;
+      case 'TOOLS_LOAD_CALCULATOR':
+        return <LoadCalculator onGoHome={handleGoHome} />;
       case 'LEARN':
         return (
           <div className="flex flex-1 overflow-hidden">
@@ -284,7 +295,9 @@ const App: React.FC = () => {
         onToggleTutor={() => setTutorOpen(!isTutorOpen)}
         disciplines={disciplines}
         onSelectDiscipline={handleStartLearning}
+        onSelectSearchResult={handleSelectSearchResult}
         onGoHome={handleGoHome}
+        onSelectTool={(tool) => setViewMode(tool as ViewMode)}
       />
       {renderContent()}
 
