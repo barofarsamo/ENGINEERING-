@@ -74,7 +74,7 @@ export const disciplines: Discipline[] = [
   civilEngineeringDiscipline,
   {
     id: 'aerospace-engineering',
-    name: 'Injineernimada Hawada Sare',
+    name: 'Aerospace Engineering',
     icon: RocketIcon,
     description: 'Qaybta koowaad ee injineernimada ee ka shaqaysa horumarinta diyaaradaha iyo dayax-gacmeedyada.',
     levels: [
@@ -126,7 +126,7 @@ export const disciplines: Discipline[] = [
   },
   {
     id: 'mechanical-engineering',
-    name: 'Injineernimada Makaanikada',
+    name: 'Mechanical Engineering',
     icon: GearIcon,
     description: 'Ku dabaq mabaadi\'da fiisigiska iyo sayniska walxaha naqshadaynta iyo falanqaynta nidaamyada makaanikada.',
     levels: [
@@ -176,7 +176,7 @@ export const disciplines: Discipline[] = [
   },
   {
     id: 'electrical-engineering',
-    name: 'Injineernimada Korontada',
+    name: 'Electrical Engineering',
     icon: ZapIcon,
     description: 'Daraasadda iyo ku dabaqida korontada, elektarooniga, iyo electromagnetism.',
     levels: [
@@ -226,7 +226,7 @@ export const disciplines: Discipline[] = [
   },
   {
     id: 'computer-engineering',
-    name: 'Injineernimada Kombiyuutarka',
+    name: 'Computer Engineering',
     icon: ChipIcon,
     description: 'Waxay isku darsataa sayniska kombiyuutarka iyo injineernimada elektarooniga si loo horumariyo qalabka iyo software-ka kombiyuutarka.',
     levels: [

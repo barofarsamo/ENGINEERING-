@@ -404,7 +404,7 @@ const drawing_intro = [
 
 export const civilEngineeringDiscipline: Discipline = {
   id: 'civil-engineering',
-  name: 'Injineernimada Madaniga',
+  name: 'Civil Engineering',
   icon: BuildingIcon,
   description: 'Naqshadee, dhis, oo dayactir kaabayaasha aasaasiga ah ee bulshada casriga ah.',
   levels: [
