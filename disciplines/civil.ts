@@ -1,11 +1,13 @@
 
 import type { Discipline, Lesson } from '../types';
 import { BuildingIcon } from '../components/Icons';
+import { civilEngineeringLabs } from './civil/labs';
 
-const createCivilLesson = (id: string, title: string, content: any): Lesson => ({
+const createCivilLesson = (id: string, title: string, content: any, labId?: string): Lesson => ({
     id: `civil-${id}`,
     title,
     imageUrl: `https://picsum.photos/800/400?random=${id}`,
+    labId: labId,
     structuredContent: {
         whatIsIt: { title: 'Waa Maxay?', content: content.whatIsIt || 'Qeexitaan guud oo ku saabsan mawduucan.' },
         whyIsItImportant: { title: 'Maxay Muhiim u Tahay?', content: content.whyIsItImportant || 'Sharaxaad ku saabsan muhiimadda mawduucan.' },
@@ -33,9 +35,9 @@ const createCivilLesson = (id: string, title: string, content: any): Lesson => (
 const calculus_functions_limits = [
     createCivilLesson('calculus-functions-basics', 'CASHAR 1: Aasaaska Functions', {
         whatIsIt: "Function waa isku xirka u dhexeeya laba doorsoome (variables) halkaasoo qiimaha mid ka mid ah uu ku xiran yahay qiimaha kan kale. Midka hore waxaa loo yaqaan doorsoomaha madaxa-bannaan (Independent Variable), kan labaadna waa doorsoomaha ku-tiirsan (Dependent Variable).",
-        whyIsItImportant: "Functions waa aasaaska luqadda aan kula hadalno qaab-dhismeedyada. Waxay noo oggolaanayaan inaan si xisaabeysan u moodeelayno xiriirka ka dhexeeya sababta iyo saameynta injineernimada. Marka aad dhisayso daaqad, culeyska ay qaadanaysaa waxay ku xirantahay masaafka u dhexeeya tiirrada. Haddii masaafu yar yahay, culeysku wuu kordhiyaa. Haddii masaafu weyn yahay, culeysku wuu yaraadaa.",
-        examples: `Tusaale Dhismaha:\n\`Culeyska Daqaad = f(Masaafa Xoog)\`\nHalkee:\n- **Culeyska Daqaad** = Dependent Variable (waa natiijada)\n- **Masaafa Xoog** = Independent Variable (waa waxa aad beddeli karto)`,
-        howItWorks: `Qaabka Function-ka ee fudud wuxuu noqon karaa: \`f(x)= (W × L) / d\`\nHalkee:\n- \`f(x)\` = Culeyska uu qaadayo (Output)\n- \`W\` = Culeyska guud ee saaran (tusaale, 1000kg)\n- \`L\` = Dhererka daaqadda (tusaale, 4 mitir)\n- \`d\` = Masaafka u dhexeeya tiirrada (Input)`,
+        whyIsItImportant: "Functions waa aasaaska luqadda aan kula hadalno qaab-dhismeedyada. Waxay noo oggolaanayaan inaan si xisaabeysan u moodeelayno xiriirka ka dhexeeya sababta iyo saameynta injineernimada. Marka aad naqshadeynayso dogob (beam), leexashadiisu (deflection) waa function ku xiran culeyska saaran iyo dhererkiisa.",
+        examples: `Tusaale Dhismaha:\n\`Leexashada Dogobka = f(Culeyska, Dhererka)\`\nHalkee:\n- **Leexashada Dogobka** = Dependent Variable (waa natiijada)\n- **Culeyska & Dhererka** = Independent Variables (waa waxa aad beddeli karto)`,
+        howItWorks: "Qaabka Function-ka ee fudud wuxuu noqon karaa: `f(x)= (W × L³) / (48 × E × I)` (Qaacidada leexashada dogobka dhexda laga saaray culeys).\n\n**Tusaale Xisaabeed:**\nKa soo qaad inaad leedahay dogob alwaax ah oo dhererkiisu yahay 4 mitir (L=4m) oo qaadaya culeys guud oo ah 2000 Newtons (W=2000N) bartamaha. Waxaan u baahanahay inaan xisaabino leexashada ugu badan.\n(Fiiro gaar ah: E iyo I waa qiimayaal la xiriira nooca walaxda iyo qaabka dogobka, laakiin hadda waxaan u qaadaneynaa in 48EI = 100,000 si aan u fududeyno).\n\n```\n1. Qaacidada: f(L) = (W × L³) / 100,000\n2. Geli Qiimayaasha: f(4) = (2000N × (4m)³) / 100,000\n3. Xisaabi: f(4) = (2000 × 64) / 100,000 = 128,000 / 100,000 = 1.28m\n```\n\n**Fasiraad:** Leexashada ugu badan ee dogobku waa 1.28 mitir. Tani waa qiimo aad u weyn oo muujinaya in dogobkani uusan ku habboonayn culeyskan, injineerkuna waa inuu beddelaa naqshadda.",
         prerequisites: "Fahamka aasaasiga ah ee aljebrada iyo doorsoomayaasha (variables).",
         quiz: [
             {
@@ -45,24 +47,18 @@ const calculus_functions_limits = [
                 explanation: "Maadaama 'd' ay ku jirto hooseeyaha jajabka, kororka 'd' wuxuu keenaa in natiijada 'C' ay yaraato."
             },
             {
-                question: "Function-ka `f(x)= (W × L) / d`, keebaa ah 'Independent Variable' (doorsoomaha madaxa-bannaan)?",
-                options: ["W (Culeyska)", "L (Dhererka)", "d (Masaafka)", "f(x) (Natiijada)"],
-                correctAnswer: "d (Masaafka)",
-                explanation: "Xaaladdan, waxaan u qaadaneynaa inaan beddeli karno masaafka tiirrada (d) si aan u aragno saameynta, taasoo ka dhigaysa mid madax-bannaan."
-            },
-            {
-                question: "Haddii W=2000kg, L=5m, iyo d=2m, waa maxay culeyska f(x) adigoo isticmaalaya qaacidada f(x)= (W × L) / d?",
-                options: ["2500 kg", "5000 kg", "10000 kg", "2000 kg"],
-                correctAnswer: "5000 kg",
-                explanation: "f(x) = (2000 * 5) / 2 = 10000 / 2 = 5000 kg."
+                question: "Haddii W=1000N, L=2m, iyo 48EI = 50,000, waa maxay leexashada (deflection) adigoo isticmaalaya qaacidada f(L)= (W × L³) / (48EI)?",
+                options: ["0.16 m", "1.6 m", "0.08 m", "8 m"],
+                correctAnswer: "0.16 m",
+                explanation: "f(2) = (1000 * 2³) / 50000 = (1000 * 8) / 50000 = 8000 / 50000 = 0.16 m."
             }
         ]
     }),
     createCivilLesson('calculus-limits-intro', 'CASHAR 2: Xadka (Limits) - Qeexida iyo Tusaale', {
         whatIsIt: "Limit waa qiimaha uu shaqo (function) 'u dhowaanayo' marka doorsoomuhu (variable) uu u dhowaado qiimo gaar ah. Ma aha daruuri qiimaha shaqada ee dhibicdaas, laakiin waa meesha uu ku wajahan yahay.",
         whyIsItImportant: "Limits-ku wuxuu injineerka u sheegayaa 'barta burburka' ama 'xadka badbaadada'. Waxaan u isticmaalnaa inaan saadaalino waxa ku dhici doona qaab-dhismeedka marka uu gaaro xaaladaha ugu adag, xitaa daqiiqad ka hor inta uusan fashilmin.",
-        examples: `Tusaale La Fududeeyay:\nHaddii daaqad ay qaadi karto 100kg oo culeys ah, limit-keedu waa 100kg. Tani waxay ka dhigan tahay:\n- Marka culeysku = 99kg → daaqadu way yara dheemanaysaa, laakiin waa badqabtaa.\n- Marka culeysku = 99.999kg → daaqadu aad ayay u dheemanaysaa, waxay ku dhowdahay inay jabto.\n- Marka culeysku uu *gaaro* 100kg → daaqadu waa jabaysaa.\nLimit-ku waa 100kg – culeyska ugu badan ee ay *u dhowaan* karto iyadoon jabin.`,
-        howItWorks: `Qaabka Xisaabinta:\n\`lim f(x) = L\`\n\`x→c\`\nTani waxaa loo aqriyaa: "Limit-ka f(x) marka x uu u dhowaado c waa L".\nTusaale ahaan, \`lim f(x) = 100kg\` marka \`x→100\`, halka L (100kg) uu yahay culeyska ugu badan ee daaqadu qaadi karto.`,
+        examples: `Tusaale La Fududeeyay:\nHaddii dogob uu qaadi karo 10,000kg oo culeys ah, limit-kiisu waa 10,000kg. Tani waxay ka dhigan tahay:\n- Marka culeysku = 9,999kg → dogobku wuu yara leexanayaa, laakiin waa badqabaa.\n- Marka culeysku uu *u dhowaado* 10,000kg → dogobku aad ayuu u leexanayaa, wuxuu ku dhowdahay inuu jabto.\n- Marka culeysku uu *gaaro* 10,000kg → dogobku waa jabayaa.\nLimit-ku waa 10,000kg – culeyska ugu badan ee ay *u dhowaan* karto iyadoon jabin.`,
+        howItWorks: `**Qaabka Xisaabinta:**\n\`lim f(x) = L\` marka \`x→c\`\nTani waxaa loo aqriyaa: "Limit-ka f(x) marka x uu u dhowaado c waa L".\n\n**Tusaale Xisaabeed Fudud:**\nHaddii \`f(x) = 2x + 1\`, waa maxay limit-ka marka x uu u dhowaado 3?\n\`lim (2x + 1)\` marka \`x→3\`\nMaadaama shaqadani ay tahay mid toosan oo aan lahayn meel ay ku go'do, waxaan si toos ah u gelin karnaa qiimaha:\n\`2(3) + 1 = 6 + 1 = 7\`\nMarka x uu u dhowaado 3, qiimaha shaqadu wuxuu u dhowaanayaa 7.`,
         prerequisites: "Fahamka fikradda functions-ka.",
         quiz: [
             {
@@ -83,7 +79,7 @@ const calculus_functions_limits = [
         whatIsIt: `Shaqooyinka aasaasiga ah ee trigonometric (Sine, Cosine, Tangent) waxay qeexaan xiriirka ka dhexeeya xaglaha iyo dhinacyada saddex-xagalka qumman.\n- **sin(θ)** = Dhinaca Ka Soo Horjeeda / Hypotenuse\n- **cos(θ)** = Dhinaca Ku Dhow / Hypotenuse\n- **tan(θ)** = Dhinaca Ka Soo Horjeeda / Dhinaca Ku Dhow`,
         whyIsItImportant: "Injineernimada madaniga, wax kasta oo leh xagal ama jiirad—sida saqafyada, buundooyinka, jaranjarooyinka, iyo xoogagga ku dhacaya xagal—waxaa lagu falanqeeyaa iyadoo la isticmaalayo trigonometry.",
         examples: `Tusaale La Fududeeyay: Saqaf leh xagal 30° oo salkiisu yahay 10m.\n- Si loo helo dhererka jiirada saqafka (birta), waxaan isticmaalnaa Cosine.\n- Si loo helo joogga saqafka, waxaan isticmaalnaa Tangent.`,
-        howItWorks: `Haddii aad leedahay saqaf leh xagal θ iyo sal (L):\n- **Dhererka Birta Jiirada (Hypotenuse)** = L / cos(θ)\n- **Joogga Saqafka (Opposite)** = L × tan(θ)\n\nTusaale ahaan, saqaf leh xagal 30° oo salkiisu yahay 10m:\n- Dhererka Birta = 10 / cos(30°) = 10 / 0.866 ≈ 11.55m\n- Joogga Birta = 10 × tan(30°) = 10 × 0.577 ≈ 5.77m`,
+        howItWorks: `**Tusaale Xisaabeed: Naqshadaynta Jiirada Saqafka**\nKa soo qaad inaad naqshadaynayso saqaf salkiisu yahay 10 mitir (L=10m) oo leh jiirad xagal ah 30° (θ=30°). Waxaad u baahan tahay inaad ogaato dhererka birta jiirada iyo joogga saqafka.\n\n**1. Helitaanka Dhererka Birta Jiirada (Hypotenuse):**\n- **Qaacidada:** \`cos(θ) = Sal (Adjacent) / Hypotenuse\` → \`Hypotenuse = Sal / cos(θ)\`\n- **Geli Qiimayaasha:** \`Hypotenuse = 10m / cos(30°)\`\n- **Xisaabi:** Maadaama \`cos(30°) ≈ 0.866\`, \`Hypotenuse = 10 / 0.866 ≈ 11.55m\`\n\n**2. Helitaanka Joogga Saqafka (Opposite):**\n- **Qaacidada:** \`tan(θ) = Joog (Opposite) / Sal (Adjacent)\` → \`Joog = Sal × tan(θ)\`\n- **Geli Qiimayaasha:** \`Joog = 10m × tan(30°)\`\n- **Xisaabi:** Maadaama \`tan(30°) ≈ 0.577\`, \`Joog = 10 × 0.577 ≈ 5.77m\`\n\n**Fasiraad:** Waxaad u baahan tahay biro dhererkoodu yahay 11.55m, saqafkuna wuxuu kor u kici doonaa 5.77m bartamaha.`,
         prerequisites: "Aqoonta aasaasiga ah ee joometeriga iyo saddex-xagallada.",
         quiz: [
             {
@@ -104,7 +100,7 @@ const calculus_functions_limits = [
         whatIsIt: "Funkshan waa 'joogto' (continuous) haddii garaafkiisa la sawiri karo iyada oo aan qalinka la qaadin. Si farsamo ahaan, macnaheedu waa isbeddel yar oo ku yimaada input-ka wuxuu keenaa isbeddel yar oo la saadaalin karo oo ku yimaada output-ka, iyada oo aan jirin boodbood ama daloolo.",
         whyIsItImportant: "Dhismayaasha iyo kaabayaasha waa inay noqdaan kuwo joogto ah. Jajab ama meel aan isku xirnayn (discontinuity) oo ku timaada dogob, buundo, ama waddo waxay matalaysaa dildilaac, daciifnimo, ama barta burburka. Falanqaynta qaab-dhismeedku waxay ku tiirsan tahay malo-awaalka ah in walxuhu ay yiin kuwo joogto ah.",
         mainParts: `Shuruudaha Continuity ee dhibicda 'a':\n1.  **f(a) waa inuu jiraa:** Shaqadu waa inay qeexan tahay meeshaas.\n2.  **lim f(x) marka x→a waa inuu jiraa:** Limit-ku waa inuu ka jiraa labada dhinacba.\n3.  **f(a) = lim f(x) marka x→a:** Qiimaha shaqada iyo limit-ku waa inay is le'ekaadaan.`,
-        examples: `Tusaale La Fududeeyay ee Waddada:\n- **Continuous:** Waddo si fiican loo dhisay, siman, oo aan lahayn dildilaac. Gaarigu si habsami leh ayuu ku socon karaa.\n- **Discontinuous:** Waddo leh god weyn ama buundo dhexda ka go'an. Tani waa meel aan joogto ahayn oo halis gelinaysa badbaadada.`,
+        examples: `**Tusaale Injineernimo:**\n- **Continuous:** Dogob bir ah oo isku dhan. Marka culeys la saaro, leexashadiisu waa mid siman oo la saadaalin karo.\n- **Discontinuous:** Laba dogob oo si liidata la isugu alxamay. Barta alxanka waa 'discontinuity' awoodda ah. Marka culeys la saaro, bartaas way jabi kartaa si lama filaan ah.\n\n**Tusaale Xisaabeed:** Shaqada \`f(x) = 5/x\` waxay leedahay 'discontinuity' meesha x=0. Sababtoo ah ma jiro qiimo la qeexi karo marka eber wax loo qaybiyo. Tani waxay u dhigantaa god lama filaan ah oo ku yaal waddada oo aan la sii wadi karin.`,
         prerequisites: "Fahamka Limits-ka.",
         quiz: [
             {
@@ -122,9 +118,9 @@ const calculus_functions_limits = [
         ]
     }),
     createCivilLesson('calculus-limits-applications', 'CASHAR 5: Isticmaalka Xadka Dhibaatooyinka Dhabta ah', {
-        whatIsIt: "Casharkani wuxuu isku darayaa fahamkeena limits-ka si aan u xallino dhibaatooyin la taaban karo oo injineernimo. Waxaan arki doonaa sida loo isticmaalo aljebrada si loo qiimeeyo limits-ka marka ay u muuqdaan kuwo aan la qeexin marka hore.",
+        whatIsIt: "Casharkani wuxuu isku darayaa fahamkeena limits-ka si aan u xallino dhibaatooyin la taaban karo oo injineernimo. Waxaan arki doonaa sida loo isticmaalo aljebrada si loo qiimeeyo limits-ka marka ay u muuqdaan kuwo aan la qeexin marka hore (qaabka 0/0).",
         prerequisites: "Faham adag oo ku saabsan aljebrada, gaar ahaan kala-bixinta (factoring).",
-        examples: `**Masaal 1: Xisaabinta Culeyska Ugu Badan**\nHaddii awoodda qaadista daaqad lagu matalo \`f(x) = 50x - x²\`, halka 'x' yahay masaafada tiirarka. Waxaan rabnaa inaan ogaanno culeyska ugu badan marka masaafadu tahay 25.\n\`lim (50x - x²)\` marka \`x→25\`\n**Xallinta:** Maadaama shaqadani ay tahay mid joogto ah, waxaan si toos ah u gelin karnaa qiimaha:\nf(25) = 50(25) - (25)² = 1250 - 625 = 625kg.\n\n**Masaal 2: Falanqaynta Barta Daciifka ah ee Kaniyo**\nLeexashada kaniyo waxaa lagu matalaa \`f(x) = (x³ - 8) / (x - 2)\`. Meesha x=2 waa meel muhiim ah, laakiin haddii aan gelinno 2, waxaan helaynaa 0/0. Waxaan isticmaaleynaa aljebrada si aan u helno limit-ka.\n**Xallinta:**\nWaxaan kala bixin karnaa \`x³ - 8\` oo noqonaysa \`(x-2)(x²+2x+4)\`.\nlim [(x-2)(x²+2x+4) / (x-2)] marka \`x→2\`\nWaxaan iska jareynaa \`(x-2)\`:\nlim (x²+2x+4) marka \`x→2\`\nHadda waxaan gelin karnaa 2:\n(2)² + 2(2) + 4 = 4 + 4 + 4 = 12.\nLeexashadu waxay u dhowaanaysaa 12 cutub marka la gaaro bartaas.`,
+        howItWorks: `**Masaal: Falanqaynta Barta Daciifka ah ee Dogob**\nLeexashada dogob meel u dhow tiirka waxaa lagu matali karaa \`f(x) = (x² - 4) / (x - 2)\`. Meesha x=2 waa meel muhiim ah (tiirka laftiisa), laakiin haddii aan gelinno 2, waxaan helaynaa 0/0. Waxaan isticmaaleynaa aljebrada si aan u helno limit-ka leexashada marka loo dhowaado tiirka.\n\n**Xallinta:**\n1. **Falanqee Qaacidada:** Waxaan aragnaa in \`x² - 4\` la kala bixin karo (waa 'difference of squares').\n2. **Kala Bixi:** \`x² - 4\` waxay noqonaysaa \`(x-2)(x+2)\`.\n3. **Fududee:** \`lim [(x-2)(x+2) / (x-2)]\` marka \`x→2\`\n4. **Iska Jar:** Waxaan iska jareynaa \`(x-2)\` qeybta sare iyo hoose: \`lim (x+2)\` marka \`x→2\`\n5. **Xisaabi Limit-ka:** Hadda waxaan si toos ah u gelin karnaa 2:\n   \`2 + 2 = 4\`.\n\n**Fasiraad:** Inkastoo qaacidada aysan si toos ah u shaqeyneynin meesha x=2, waxaan ognahay in leexashadu ay u dhowaanayso 4 cutub marka la gaaro bartaas. Aqoontani waxay muhiim u tahay falanqaynta badbaadada isku xirka.`,
         quiz: [
             {
                 question: "Waa maxay limit-ka f(x) = (x² - 9) / (x - 3) marka x uu u dhowaado 3?",
@@ -145,12 +141,9 @@ const calculus_functions_limits = [
 const calculus_derivatives = [
     createCivilLesson('derivative-definition-basics', 'CASHAR 1: Qeexida Derivative iyo Aasaasiga', {
         whatIsIt: "Derivative waa isbeddelka degdegga ah (instantaneous rate of change) ee shaqo marka doorsoomuhu isbeddelo. Si fudud, waa xawaaraha isbeddelka ee hal dhibic oo gaar ah. Joomatari ahaan, waa jiirada (slope) xariiqda taabata qalooca meeshaas.",
-        whyIsItImportant: "Derivatives waxay injineerka u sheegaan sida ay wax isu beddelayaan. Tani waxay muhiim u tahay in la helo meelaha ugu sarreeya (maximum) iyo kuwa ugu hooseeya (minimum). Tusaale ahaan, marka aad dhisayso saqaf qaloocan, waxaad u baahan tahay inaad ogaato barta ugu sarreysa si aad u hubiso adkeysiga, ama marka aad naqshadeynayso biyo-mareen, waxaad rabtaa inaad hesho meesha ugu hooseysa si aad u hubiso in biyuhu si fiican u socdaan.",
-        howItWorks: `Haddii shaqada matalaysa qaabka saqafka ay tahay: \`f(x) = x² - 4x + 6\`.
-Si aan u helno derivative-keeda, waxaan isticmaalnaa qawaaniinta aasaasiga ah:
-Derivative-keedu waa: \`f'(x) = 2x - 4\`.
-Marka aan derivative-ka la simno eber (\`2x - 4 = 0\`), waxaan helaynaa \`x = 2\`. Tani waa barta ugu hooseysa ee saqafka, meesha ugu muhiimsan ee la falanqeeyo.`,
-        examples: `Saami dushiisa, haddii qaabkiisa lagu matalo funkshan, derivative-ku wuxuu naga caawinayaa inaan helno meesha ugu hooseysa. Meeshan waa meesha ugu fiican ee laga taagi karo tiir dheeraad ah maxaa yeelay waa meesha ugu adag.`,
+        whyIsItImportant: "Derivatives waxay injineerka u sheegaan sida ay wax isu beddelayaan. Tani waxay muhiim u tahay in la helo meelaha ugu sarreeya (maximum) iyo kuwa ugu hooseeya (minimum) ee qaab-dhismeedka, sida leexashada ugu badan ee dogob ama cadaadiska ugu sarreeya.",
+        howItWorks: `**Tusaale Xisaabeed: Helitaanka Leexashada Ugu Yar**\nLeexashada dogob waxaa lagu matali karaa shaqadan: \`f(x) = x² - 4x + 6\`, halka 'x' ay tahay masaafada. Waxaan rabnaa inaan helno meesha leexashadu ugu yar tahay (barta ugu hooseysa).\n\n1. **Soo Hel Derivative-ka:** Adigoo isticmaalaya Power Rule, derivative-ka shaqadani waa: \`f'(x) = 2x - 4\`.\n2. **La Sim Eber:** Si loo helo barta taagan (meesha jiiradu eber tahay), waxaan la simaynaa derivative-ka eber: \`2x - 4 = 0\`.\n3. **Xalli:** \`2x = 4\` → \`x = 2\`.\n\n**Fasiraad:** Meesha leexashadu ugu yar tahay (ama ugu badan tahay kiis kale) waa meesha masaafadu tahay 2 mitir. Tani waa barta ugu muhiimsan ee la falanqeeyo si loo hubiyo adkeysiga dogobka.`,
+        examples: `Tusaale kale, haddii shaqadu matalayso cadaadiska saaran aasaaska dhismaha, derivative-ka wuxuu naga caawinayaa inaan helno meesha cadaadisku ugu badan yahay, si aan meeshaas u xoojino.`,
         quiz: [
             {
                 question: "Maxay derivative-ku u matalaysaa garaafka shaqo?",
@@ -172,13 +165,7 @@ Marka aan derivative-ka la simno eber (\`2x - 4 = 0\`), waxaan helaynaa \`x = 2\
 2.  **Product Rule:** \`d/dx(uv) = u'v + uv'\`
 3.  **Chain Rule:** \`d/dx[f(g(x))] = f'(g(x)) × g'(x)\``,
         whyIsItImportant: "Qawaaniintan waxay noo suurtagelinayaan inaan si degdeg ah u xallino qaacidooyin injineernimo oo adag. Tusaale ahaan, marka la xisaabinayo sida cadaadisku ugu faafo birta, qaacidada waxay noqon kartaa mid isku dhafan, waxaana loo baahan yahay Chain Rule si loo helo isbeddelkeeda.",
-        howItWorks: `Tusaale ahaan, aan isticmaalno Chain Rule si aan u helno derivative-ka shaqada matalaysa adkeysiga bir qoto dheer: \`f(x) = √(x² + 4)\`
-1.  Shaqada dibadda waa \`√u\`, derivative-keedu waa \`1/(2√u)\`.
-2.  Shaqada gudaha waa \`u = x² + 4\`, derivative-keedu waa \`2x\`.
-3.  Isku dhufo: \`f'(x) = (1/(2√(x² + 4))) × 2x = x/√(x² + 4)\``,
-        examples: `Haddii aan rabno inaan ogaano heerka isbeddelka adkeysiga marka birta dhererkeedu yahay 5m:
-\`f'(5) = 5/√(5² + 4) = 5/√29 ≈ 0.93\`.
-Tani waxay ka dhigan tahay in heerka isbeddelka adkeysigu yahay 0.93 cutub halkii mitir ee dhererka ah meeshaas.`,
+        howItWorks: `**Tusaale Xisaabeed: Isticmaalka Chain Rule**\nKa soo qaad in cadaadiska (stress) ku jira fiilada buundada lagu matalo shaqadan: \`S(t) = (5t² + 3)³\` halka 't' ay tahay heerkulka. Waxaan rabnaa inaan ogaanno heerka isbeddelka cadaadiska marka loo eego heerkulka (S'(t)).\n\n1. **Aqoonso Shaqooyinka:** Shaqada dibadda waa \`f(u) = u³\`. Shaqada gudaha waa \`g(t) = 5t² + 3\`.\n2. **Soo Hel Derivatives-kooda:** \`f'(u) = 3u²\`. \`g'(t) = 10t\`.\n3. **Ku Dabaq Chain Rule:** \`S'(t) = f'(g(t)) × g'(t)\`\n   \`S'(t) = 3(5t² + 3)² × (10t)\`\n   \`S'(t) = 30t(5t² + 3)²\`\n\n**Fasiraad:** Qaacidadan \`S'(t)\` waxay noo sheegaysaa sida degdegga ah ee cadaadisku isugu beddelayo heerkul kasta. Haddii aan rabno inaan ogaanno heerka isbeddelka marka heerkulku yahay 2°C, waxaan gelinaynaa t=2.`,
         quiz: [
             {
                 question: "Isticmaal Power Rule, waa maxay derivative-ka f(x) = x⁵?",
@@ -196,15 +183,8 @@ Tani waxay ka dhigan tahay in heerka isbeddelka adkeysigu yahay 0.93 cutub halki
     }),
     createCivilLesson('optimization-basics', 'CASHAR 3: Optimization - Helitaanka Qiimaha ugu Fiican', {
         whatIsIt: "Optimization waa habka loo isticmaalo derivatives si loo helo qiimaha ugu sarreeya (maximum) ama kan ugu hooseeya (minimum) ee shaqo. Tani waxay fure u tahay naqshadaha ugu hufan ee injineernimada.",
-        whyIsItImportant: "Injineer ahaan, hadafkaagu waa inaad hesho naqshadda ugu fiican — tan ugu jaban, tan ugu adag, ama tan ugu weyn. Tusaale ahaan, inaad dhisto daaqad leh bedka ugu weyn adigoo isticmaalaya qadar go'an oo bir ah si aad u hesho iftiinka ugu badan.",
-        howItWorks: `Tusaale: Waxaan rabnaa inaan dhisno daaqad leydi ah oo dhererkeedu dhan yahay 10m oo bir ah.
-1.  **Bedka (Area):** \`A = x × y\` (kan ayaan rabnaa inaan weyneyno)
-2.  **Wareegga (Perimeter):** \`2x + 2y = 10\` → \`y = 5 - x\`
-3.  Ku beddel y shaqada bedka: \`A(x) = x(5 - x) = 5x - x²\`
-4.  Soo hel derivative-ka: \`A'(x) = 5 - 2x\`
-5.  La sim eber si aad u hesho barta muhiimka ah: \`5 - 2x = 0\` → \`x = 2.5m\`
-6.  Soo hel y: \`y = 5 - 2.5 = 2.5m\``,
-        examples: "Si loo helo daaqadda ugu weyn ee lagu dhisi karo 10m oo bir ah, waa inay noqotaa laba-jibbaarane (square) dhinacyadiisu yihiin 2.5m. Tani waxay bixinaysaa bedka ugu badan ee suurtogalka ah.",
+        whyIsItImportant: "Injineer ahaan, hadafkaagu waa inaad hesho naqshadda ugu fiican — tan ugu jaban, tan ugu adag, ama tan ugu weyn. Tusaale ahaan, inaad dhisto kanaal biyo oo leh qaabka ugu fiican si uu u qaado biyaha ugu badan iyadoo la isticmaalayo qadar go'an oo shamiito ah.",
+        howItWorks: `**Tusaale Xisaabeed: Naqshadaynta Kanaalka Biyaha ee Ugu Fiican**\nWaxaan rabnaa inaan dhisno kanaal biyo oo leydi ah oo furan oo wareeggiisu (perimeter) yahay 10m. Waxaan rabnaa inaan helno cabbirrada (ballaca 'x' iyo joogga 'y') si uu u qaado bedka ugu weyn (maximum cross-sectional area).\n\n1.  **Bedka (Area - Shaqada la weyneynayo):** \`A = x × y\`\n2.  **Wareegga (Perimeter - Xaddidaadda):** Kanaalku waa furan yahay, markaa \`x + 2y = 10\`. Ka soo saar y: \`y = (10 - x) / 2 = 5 - 0.5x\`\n3.  **Samee Hal Shaqo:** Ku beddel y shaqada bedka: \`A(x) = x(5 - 0.5x) = 5x - 0.5x²\`\n4.  **Soo Hel Derivative-ka:** \`A'(x) = 5 - x\`\n5.  **La Sim Eber:** Si aad u hesho barta muhiimka ah: \`5 - x = 0\` → \`x = 5m\`\n6.  **Soo Hel y:** \`y = 5 - 0.5(5) = 5 - 2.5 = 2.5m\`\n\n**Fasiraad:** Si loo helo bedka ugu weyn, ballaca kanaalku waa inuu ahaadaa 5m, jooggiisuna 2.5m. Cabbirradan ayaa hubinaya in kanaalku qaado biyaha ugu badan ee suurtogalka ah.`,
         quiz: [
             {
                 question: "Maxay tahay tillaabada ugu horreysa ee lagu xalliyo dhibaatada optimization-ka?",
@@ -216,13 +196,8 @@ Tani waxay ka dhigan tahay in heerka isbeddelka adkeysigu yahay 0.93 cutub halki
     }),
     createCivilLesson('related-rates-basics', 'CASHAR 4: Related Rates - Isbeddelka la Xidhiidha', {
         whatIsIt: "Related Rates waa dhibaatooyin ku lug leh helitaanka heerka isbeddelka hal doorsoome iyadoo la og yahay heerka isbeddelka doorsoome kale oo la xiriira. Waxaan isticmaalnaa differentiation si aan u helno xiriirka ka dhexeeya heerarkooda isbeddel.",
-        whyIsItImportant: "Dhismaha, waxyaabo badan ayaa isku mar isbeddela. Marka la shubayo biyo weel (weer), mugga biyuhu wuu kordhayaa, dhererka biyuhuna sidoo kale wuu kordhayaa. Related rates waxay noo oggolaanayaan inaan xisaabino sida degdegga ah ee dhererku u kordhayo marka la ogyahay sida degdegga ah ee biyaha loo shubayo.",
-        howItWorks: `Tusaale: Weer (taangi) cilindir ah, gacan-kiisu (radius) yahay 2m, ayaa biyo lagu shubayaa heerka 10 m³/s. Sidee degdeg ah ayuu dhererka (h) biyuhu u kordhayaa?
-1.  **Qaacidada:** Mugga cilindirka waa \`V = πr²h\`. Maadaama r uu yahay mid go'an (2m), \`V = 4πh\`.
-2.  **Differentiation:** Ka qaad derivative-ka labada dhinac marka loo eego waqtiga (t): \`dV/dt = 4π(dh/dt)\`.
-3.  **Xallinta:** Waxaan naqaannaa \`dV/dt = 10 m³/s\`. Marka \`10 = 4π(dh/dt)\`.
-    \`dh/dt = 10 / (4π) ≈ 0.796 m/s\`.`,
-        examples: "Dhererka biyuhu wuxuu ku kordhayaa qiyaastii 0.8 mitir ilbiriqsikiiba. Aqoontani waxay muhiim u tahay naqshadaynta nidaamyada buuxinta iyo faaruqinta taangiyada si looga fogaado inay buux-dhaafaan.",
+        whyIsItImportant: "Dhismaha, waxyaabo badan ayaa isku mar isbeddela. Marka la shubayo biyo taangi, mugga biyuhu wuu kordhayaa, dhererka biyuhuna sidoo kale wuu kordhayaa. Related rates waxay noo oggolaanayaan inaan xisaabino sida degdegga ah ee dhererku u kordhayo marka la ogyahay sida degdegga ah ee biyaha loo shubayo.",
+        howItWorks: `**Tusaale Xisaabeed: Buuxinta Taangiga Biyaha**\nTaangi cilindir ah, gacan-kiisu (radius) yahay 2m, ayaa biyo lagu shubayaa heerka 10 m³/s. Sidee degdeg ah ayuu dhererka (h) biyuhu u kordhayaa?\n\n1.  **Qaacidada Guud:** Mugga cilindirka waa \`V = πr²h\`. Maadaama r uu yahay mid go'an (r=2m), qaacidada waa \`V = 4πh\`.\n2.  **Differentiation marka loo eego Waqtiga (t):** Ka qaad derivative-ka labada dhinac: \`dV/dt = 4π(dh/dt)\`.\n3.  **Geli Qiimayaasha La Yaqaan:** Waxaan naqaannaa in biyaha lagu shubayo \`dV/dt = 10 m³/s\`. Marka \`10 = 4π(dh/dt)\`.\n4.  **Xalli si aad u Hesho dh/dt:** \`dh/dt = 10 / (4π) ≈ 0.796 m/s\`.\n\n**Fasiraad:** Dhererka biyuhu wuxuu ku kordhayaa qiyaastii 0.8 mitir ilbiriqsikiiba. Aqoontani waxay muhiim u tahay naqshadaynta nidaamyada buuxinta iyo faaruqinta taangiyada si looga fogaado inay buux-dhaafaan.`,
         quiz: [
             {
                 question: "Haddii dhererka iyo ballaca leydi ay ku korayaan heerarka 2 cm/s iyo 3 cm/s siday u kala horreeyaan, sidee degdeg ah ayuu bedku u korayaa marka dhererku yahay 10cm ballacuna yahay 6cm?",
@@ -235,25 +210,13 @@ Tani waxay ka dhigan tahay in heerka isbeddelka adkeysigu yahay 0.93 cutub halki
     createCivilLesson('derivative-applications-construction', 'CASHAR 5: Isticmaalka Derivatives-ka ee Dhismaha', {
         whatIsIt: "Casharkani wuxuu soo koobayaa sida fikradaha derivatives-ka loogu dabaqo dhibaatooyinka dhabta ah ee injineernimada madaniga, sida xisaabinta xoogagga, dheemanista (deflection), iyo jiirada waddooyinka.",
         whyIsItImportant: "Derivatives waxay bixiyaan hab sax ah oo lagu falanqeeyo sida qaab-dhismeedyadu uga falceliyaan culeysyada iyo sida loo naqshadeeyo kaabayaasha sida waddooyinka si ay u noqdaan kuwo badbaado leh oo waxtar leh.",
-        examples: `**Qorsheynta Jiirada Waddo:**
-Haddii qaabka dhererka waddo lagu matalo: \`f(x) = 0.02x² - 0.5x + 10\`, halka x ay tahay masaafada.
-Jiirada waddada meel kasta waxaa bixiya derivative-ka:
-\`f'(x) = 0.04x - 0.5\`.
-Jiiradu waa boqolley (percentage), markaa haddii aan rabno jiirada meesha masaafadu tahay 100m:
-\`f'(100) = 0.04(100) - 0.5 = 4 - 0.5 = 3.5\`.
-Tani waxay ka dhigan tahay in meeshaas, jiirada waddadu ay tahay 3.5%. Aqoontani waxay muhiim u tahay naqshadaynta dheecaanka biyaha iyo badbaadada gaadiidka.`,
+        howItWorks: `**Tusaale Xisaabeed: Qorsheynta Jiirada Waddo**\nQaabka dhererka waddo waxaa lagu matali karaa: \`h(x) = 0.01x² - 0.2x + 5\`, halka x ay tahay masaafada. Waxaan rabnaa inaan ogaanno jiirada waddada meesha masaafadu tahay 50m.\n\n1. **Soo Hel Shaqada Jiirada (Derivative):** Jiirada waddada meel kasta waxaa bixiya derivative-ka: \`h'(x) = 0.02x - 0.2\`.\n2. **Xisaabi Jiirada Meesha la Rabo (x=50):** Geli qiimaha x: \`h'(50) = 0.02(50) - 0.2 = 1 - 0.2 = 0.8\`.\n\n**Fasiraad:** Meesha masaafadu tahay 50m, jiirada waddadu waa 0.8, taasoo la micno ah 80% (tani waa jiirad aad u weyn oo tusaale ah). Aqoontani waxay muhiim u tahay naqshadaynta dheecaanka biyaha iyo badbaadada gaadiidka.`,
         quiz: [
             {
                 question: "Haddii shaqada matalaysa dheemanista (deflection) dogob ay tahay d(x), maxay matalaysaa d'(x)?",
                 options: ["Dhererka dogobka", "Culeyska saaran", "Jiirada (slope) ee dheemanista", "Midna"],
                 correctAnswer: "Jiirada (slope) ee dheemanista",
                 explanation: "Derivative-ka shaqada dheemanista wuxuu bixiyaa jiirada qalooca dheemanista, taasoo muujinaysa xagasha uu dogobku ku leexday."
-            },
-            {
-                question: "Maxay muhiim u tahay in la ogaado jiirada waddo?",
-                options: ["Midabka waddada", "Dheecaanka biyaha roobka iyo xawaaraha baabuurta", "Magaca waddada", "Tirada dadka isticmaala"],
-                correctAnswer: "Dheecaanka biyaha roobka iyo xawaaraha baabuurta",
-                explanation: "Jiirada saxda ah waxay hubisaa in biyuhu aysan fariisan waddada dhexdeeda waxayna saameysaa badbaadada iyo awoodda ay baabuurta u leeyihiin inay koraan ama degaan."
             }
         ]
     })
@@ -262,13 +225,8 @@ Tani waxay ka dhigan tahay in meeshaas, jiirada waddadu ay tahay 3.5%. Aqoontani
 const calculus_integration = [
     createCivilLesson('integration-basics', 'CASHAR 1: Aasaaska Integration', {
         whatIsIt: "Integration waa habka lagu helo 'anti-derivative' ee shaqo. Si kale haddii loo dhigo, waa soo uruurinta isbeddellada yaryar si loo helo wadarta guud. Haddii derivative-ku yahay kala-bixinta, integration-ku waa isku-keenidda.",
-        whyIsItImportant: "Marka aan naqaanno heerka isbeddelka (sida xawaaraha), integration-ku wuxuu noo oggolaanayaa inaan helno wadarta guud (sida masaafada). Dhismaha, haddii aan naqaanno culeyska ku qaybsan daaqad, integration-ku wuxuu na siinayaa culeyska guud ee ay tahay in tiirarku qaadaan.",
-        howItWorks: `Definite Integral wuxuu xisaabiyaa bedka hoos yimaada qalooc. Tusaale: Haddii culeyska ku qaybsan daaqad lagu matalo \`f(x) = 2x\` (culeysku wuu kordhayaa marka laga fogaado bilowga), culeyska guud ee daaqad 5m ah waxaa lagu helaa:
-\`Culeyska Guud = ∫₀⁵ 2x dx\`
-Anti-derivative-ka \`2x\` waa \`x²\`. Marka waxaan qiimeyneynaa:
-\`[x²]₀⁵ = 5² - 0² = 25kg\`.
-Culeyska guud ee ay tahay in daaqadu qaado waa 25kg.`,
-        examples: "Tusaalahan wuxuu muujinayaa sida loo xisaabiyo culeyska guud ee aan sinnayn. Tani waxay muhiim u tahay naqshadaynta tiirarka iyo aasaaska si ay u qaadaan culeyska dhabta ah.",
+        whyIsItImportant: "Marka aan naqaanno culeyska ku qaybsan dogob, integration-ku wuxuu na siinayaa culeyska guud ee ay tahay in tiirarku qaadaan. Sidoo kale, wuxuu noo oggolaanayaa inaan xisaabino bedka iyo mugga qaababka aan joogtada ahayn.",
+        howItWorks: `**Tusaale Xisaabeed: Xisaabinta Culeyska Guud ee Dogob**\nDogob dhererkiisu yahay 5m waxaa saaran culeys aan sinnayn oo ku qaybsan, kaasoo lagu matalo shaqada \`w(x) = 2x\` N/m (culeysku wuu kordhayaa marka laga fogaado bilowga). Waa maxay culeyska guud ee saaran dogobka?\n\n1. **Samee Integral-ka:** Culeyska guud waa integral-ka shaqada culeyska laga bilaabo 0 ilaa 5:\n   \`Culeyska Guud = ∫₀⁵ 2x dx\`\n2. **Soo Hel Anti-derivative-ka:** Anti-derivative-ka \`2x\` waa \`x²\`.\n3. **Qiimee:** Waxaan qiimeyneynaa anti-derivative-ka inta u dhaxaysa 0 iyo 5:\n   \`[x²]₀⁵ = 5² - 0² = 25\`\n\n**Fasiraad:** Culeyska guud ee ay tahay in dogobku qaado waa 25 Newton. Aqoontani waxay muhiim u tahay naqshadaynta tiirarka iyo aasaaska.`,
         quiz: [
             {
                 question: "Maxay matalaysaa definite integral-ka ∫ₐᵇ f(x)dx joomatari ahaan?",
@@ -281,17 +239,9 @@ Culeyska guud ee ay tahay in daaqadu qaado waa 25kg.`,
     createCivilLesson('integration-rules-basics', 'CASHAR 2: Qawaaniinta Integration', {
         whatIsIt: `Sida differentiation-ka, integration-ku wuxuu leeyahay qawaaniin fududeynaya habka. Kuwa ugu muhiimsan waa:
 1.  **Power Rule:** \`∫xⁿ dx = (xⁿ⁺¹)/(n+1) + C\`
-2.  **Integration by Substitution:** Waa habka rogaal-celiska ah ee Chain Rule, loo isticmaalo shaqooyinka isku-dhafan.
-3.  **Integration by Parts:** Waa habka rogaal-celiska ah ee Product Rule, loo isticmaalo isku-dhufashada shaqooyinka.`,
+2.  **Integration by Substitution:** Waa habka rogaal-celiska ah ee Chain Rule, loo isticmaalo shaqooyinka isku-dhafan.`,
         whyIsItImportant: "Qawaaniintan ayaa ah qalabka lagama maarmaanka u ah xallinta dhibaatooyin injineernimo oo badan oo ku lug leh isku-darka saameynaha, sida helitaanka 'center of mass' ee qaab-dhismeed adag.",
-        howItWorks: `Tusaale ahaan, aan isticmaalno **Substitution** si aan u xallino:
-\`∫x√(x² + 1) dx\`
-Tani waxay matali kartaa qaacido adag oo la xiriirta awoodda birta.
-1.  Dooro u: \`u = x² + 1\`.
-2.  Soo hel du: \`du = 2x dx\` → \`x dx = du/2\`.
-3.  Ku beddel integral-ka: \`∫√u (du/2) = (1/2)∫u¹ᐟ² du\`.
-4.  Isticmaal Power Rule: \`(1/2) * [u³ᐟ² / (3/2)] + C = (1/3)u³ᐟ² + C\`.
-5.  Ku celi u qiimihiisii hore: \`(1/3)(x² + 1)³ᐟ² + C\`.`,
+        howItWorks: `**Tusaale Xisaabeed: Isticmaalka Substitution**\nWaxaan rabnaa inaan xallino: \`∫x√(x² + 1) dx\`. Tani waxay matali kartaa qaacido adag oo la xiriirta awoodda birta.\n\n1.  **Dooro u:** Waxaan dooraneynaa qeybta gudaha: \`u = x² + 1\`.\n2.  **Soo hel du:** \`du = 2x dx\`, taasoo la micno ah \`x dx = du/2\`.\n3.  **Ku Beddel Integral-ka:** \`∫√u (du/2) = (1/2)∫u¹ᐟ² du\`.\n4.  **Isticmaal Power Rule:** \`(1/2) * [u³ᐟ² / (3/2)] + C = (1/3)u³ᐟ² + C\`.\n5.  **Ku Celi u Qiimihiisii Hore:** \`(1/3)(x² + 1)³ᐟ² + C\`.\n\n**Fasiraad:** Tani waa anti-derivative-ka. Haddii aan rabno inaan xisaabino qiime gaar ah, waxaan isticmaali karnaa definite integral.`,
         quiz: [
             {
                 question: "Isticmaal Power Rule for integration, waa maxay ∫x³ dx?",
@@ -303,19 +253,8 @@ Tani waxay matali kartaa qaacido adag oo la xiriirta awoodda birta.
     }),
     createCivilLesson('integration-area-volume', 'CASHAR 3: Xisaabinta Bedka iyo Mugga', {
         whatIsIt: "Mid ka mid ah adeegsiyada ugu awoodda badan ee integration-ka waa awoodda lagu xisaabiyo bedka qaababka aan joogtada ahayn iyo mugga walxaha adag (solids of revolution).",
-        // FIX: Combine multiline content into a single template literal string.
-        whyIsItImportant: `Injineernimada madaniga, tan waxaa loo isticmaalaa in lagu xisaabiyo:
-- Mugga ciidda la qodayo ama la buuxinayo.
-- Mugga shamiitada looga baahan yahay dhismo qaab adag leh.
-- Awoodda kaydinta biyaha ee biyo-xireen (dam) leh qaab aan joogto ahayn.`,
-        howItWorks: `Xisaabinta Mugga Weer (Taangi):
-Si loo xisaabiyo mugga weer cilindir ah oo dhererkiisu yahay 'H' iyo gacan-kiisu 'R', waxaan isku-darnaa bedka goobo kasta oo yar (πR²) laga bilaabo salka ilaa dusha:
-\`V = ∫₀ᴴ πR² dh\`
-Maadaama πR² ay tahay joogto:
-\`V = πR² [h]₀ᴴ = πR²(H - 0) = πR²H\`.
-Haddii dhererku yahay 10m, gacankuna 2m:
-\`V = π(2)² × 10 = 40π ≈ 125.66 m³\`.`,
-        examples: "Marka la ogaado mugga saxda ah, injineerku wuxuu si sax ah u qiyaasi karaa kharashka agabka wuxuuna hubin karaa in qaab-dhismeedku buuxinayo shuruudaha loo baahan yahay, sida inuu hayo 125.66 mitir cubic oo biyo ah.",
+        whyIsItImportant: `Injineernimada madaniga, tan waxaa loo isticmaalaa in lagu xisaabiyo:\n- Mugga ciidda la qodayo ama la buuxinayo.\n- Mugga shamiitada looga baahan yahay dhismo qaab adag leh.\n- Awoodda kaydinta biyaha ee biyo-xireen (dam) leh qaab aan joogto ahayn.`,
+        howItWorks: `**Tusaale Xisaabeed: Mugga Taangiga Biyaha**\nSi loo xisaabiyo mugga taangi cilindir ah oo dhererkiisu yahay 10m (H=10m) iyo gacan-kiisu 2m (R=2m), waxaan isku-darnaa bedka goobo kasta oo yar (πR²) laga bilaabo salka ilaa dusha:\n\n1. **Samee Integral-ka:** \`V = ∫₀¹⁰ π(2)² dh = ∫₀¹⁰ 4π dh\`\n2. **Soo Hel Anti-derivative-ka:** Anti-derivative-ka \`4π\` (oo ah joogto) waa \`4πh\`.\n3. **Qiimee:** \`[4πh]₀¹⁰ = 4π(10) - 4π(0) = 40π\`.\n4. **Xisaabi:** \`V = 40π ≈ 125.66 m³\`.\n\n**Fasiraad:** Marka la ogaado mugga saxda ah, injineerku wuxuu si sax ah u qiyaasi karaa kharashka agabka wuxuuna hubin karaa in qaab-dhismeedku buuxinayo shuruudaha loo baahan yahay, sida inuu hayo 125.66 mitir cubic oo biyo ah.`,
         quiz: [
             {
                 question: "Sidee loo helaa mugga shay adag oo la abuuray iyadoo lagu wareejiyay qalooca y=f(x) agagaarka x-axis-ka laga bilaabo a ilaa b?",
@@ -328,13 +267,7 @@ Haddii dhererku yahay 10m, gacankuna 2m:
     createCivilLesson('integration-applications-construction', 'CASHAR 4: Isticmaalka Integration-ka ee Dhismaha', {
         whatIsIt: "Casharkani wuxuu muujinayaa sida fikradaha integration-ka loogu dabaqo si loo xalliyo dhibaatooyin kala duwan oo la taaban karo oo dhismaha ah, sida xisaabinta culeyska guud, mugga agabka, iyo xitaa shaqada la qabtay.",
         whyIsItImportant: "Integration-ku wuxuu injineerka siinayaa awood uu ku xisaabiyo tirooyinka guud ee ka dhasha qaybin aan sinnayn, taasoo ah xaalad caadi ah oo laga helo dhibaatooyinka dhabta ah ee adduunka.",
-        examples: `**Xisaabinta Culeyska Guud ee Tiir:**
-Ka soo qaad in tiir dhererkiisu yahay 3m uu qaadayo culeys aan sinnayn oo lagu matalo shaqada \`f(x) = 50 + 2x²\` N/m, halkaasoo x ay tahay masaafada salka tiirka. Si aan u helno culeyska guud ee tiirku qaadayo:
-\`Culeyska Guud = ∫₀³ (50 + 2x²) dx\`
-1.  Soo hel anti-derivative-ka: \`[50x + (2/3)x³]\`
-2.  Qiimee laga bilaabo 0 ilaa 3: \`[50(3) + (2/3)(3)³] - [50(0) + (2/3)(0)³]\`
-3.  Xisaabi: \`[150 + (2/3)(27)] - 0 = 150 + 18 = 168 N\`.
-Tiirku waa inuu awood u leeyahay inuu qaado culeys guud oo ah 168 Newton.`,
+        howItWorks: `**Tusaale Xisaabeed: Shaqada Loo Baahan Yahay In Biyo Lagu Saaro**\nTaangi cilindir ah (gacan=2m, joog=5m) ayaa biyo ka buuxaan. Imisa shaqo (work) ayaa loo baahan yahay si biyaha oo dhan looga saaro dusha sare ee taangiga? (Cufnaanta biyuhu waa 1000 kg/m³, cufisjiidadkuna waa 9.8 m/s²).\n\n1. **Fikirka:** Waxaan ka fekereynaa inaan biyaha u saarno sidii saxanno (disks) yaryar oo dhumucdoodu tahay 'dy'.\n2. **Mugga Saxanka:** \`dV = πr² dy = 4π dy\`\n3. **Culeyska Saxanka:** \`dF = (cufnaan)(g)(mug) = (1000)(9.8)(4π dy) = 39200π dy\`\n4. **Masaafada La Saaraayo:** Saxan kasta oo jooggiisu yahay 'y' waa in la saaraa masaafada \`(5-y)\`.\n5. **Shaqada Saxanka:** \`dW = dF × masaafada = 39200π(5-y) dy\`\n6. **Samee Integral-ka Shaqada Guud:**\n   \`W = ∫₀⁵ 39200π(5-y) dy = 39200π [5y - y²/2]₀⁵\`\n7. **Qiimee:** \`39200π [(25 - 25/2) - 0] = 39200π (12.5) ≈ 1,539,380 Joules\`.\n\n**Fasiraad:** Waxaa loo baahan yahay qiyaastii 1.54 Milyan oo Joules oo tamar ah si taangiga loo faaruqiyo.`,
         quiz: [
             {
                 question: "Haddii xoogga loo baahan yahay in lagu riixo shay masaafada x uu yahay F(x) = 3x², imisa shaqo (work) ayaa la qabtay marka shayga laga raro x=0 ilaa x=2?",
@@ -346,43 +279,61 @@ Tiirku waa inuu awood u leeyahay inuu qaado culeys guud oo ah 168 Newton.`,
     })
 ];
 
-const calculus_transcendental_overview_lesson = createCivilLesson('calculus-transcendental-overview', 'Hordhac: Transcendental Functions', {
-    whatIsIt: `**Waxa uu Taraarayaa:**
-- Shaqooyinka gaarka ah ee transcendental (exponential, logarithmic, trigonometric)
-- Sida loo isticmaalo shaqooyinkan xisaabayaasha injineernimada
-- Isbeddelka iyo isugu-dhufashada shaqooyinkaas
-
-**Waxa aad Baran Dontaa:**
-- Shaqooyinka exponential iyo logarithmic
-- Shaqooyinka trigonometric (sin, cos, tan)
-- Sida loo isticmaalo shaqooyinkan xallinta dhibaatooyinka`,
-    whyIsItImportant: `Dhacdooyin badan oo dabiici ah iyo kuwa injineernimo, sida gariirka dhismayaasha ama burburka walxaha shucaaca leh, laguma tilmaami karo funkshanno aljebra ah oo fudud. Funkshannada transcendental ayaa bixiya luqadda lagu moodeeleeyo nidaamyadan adag.
-- **Qorsheynta Jidhka Dhismaha:** Shaqooyinka trigonometric waxaa lagu isticmaalaa xisaabinta xoogagga ku dhaqma dhismo, gaar ahaan xoogagga kala-socda (oscillating forces) ee ka dhasha dabaysha ama dhulgariirka.
-- **Hisaabida Xoogagga:** Marka aad dhisayso dhismo, xoogagga ay saaran yihiin waxay isbeddelaan sida shaqooyinka trigonometric. Fahamka shaqooyinkan waxay kuu caawin doonaan inaad hisaabiso xoogaggaas.`,
-    examples: `**Goorta uu u Baahan Yahay:**
-- Marka aad xisaabinayso xoogagga kala-socda
-- Marka aad qorsheynayso dhismo xoogagga kala-socda ku dhaqma
-- Marka aad sahaminayso sida dhismuhu u dheemanayo xoogagga kala-duwan`,
-    quiz: [{
-        question: "Dhaqdhaqaaqa gariirka (vibration) ee buundo waxaa sida ugu fiican loogu moodeeleeyaa noocee funkshan ah?",
-        options: ["Logarithmic", "Quadratic", "Linear", "Trigonometric (sida sine ama cosine)"],
-        correctAnswer: "Trigonometric (sida sine ama cosine)",
-        explanation: "Funkshannada trigonometric waxay si dabiici ah u qeexaan dhaqdhaqaaqa soo noqnoqda ama wareegsan, sida gariirka."
-    }]
-});
-
 const transcendental_functions = [
-    calculus_transcendental_overview_lesson,
-    createCivilLesson('exponential-functions', 'Exponential Functions', { whatIsIt: "Waa funkshanno qaabkoodu yahay f(x) = aˣ, halka salka 'a' uu yahay joogte togan. Funkshanka ugu muhiimsan waa `eˣ` (natural exponential function). Waxay moodeeleeyaan koritaanka ama burburka joogtada ah."}),
-    createCivilLesson('logarithmic-functions', 'Logarithmic Functions', { whatIsIt: "Waa funkshannada rogaal-celiska ah (inverse) ee exponential functions. Haddii y = aˣ, markaa x = logₐ(y). Waxay u rogaan isku-dhufashada isku-geyn iyo awoodaha isku-dhufasho."}),
-    createCivilLesson('inverse-trigonometric-functions', 'Inverse Trigonometric Functions', { whatIsIt: "Waa funkshannada rogaal-celiska ah ee trigonometric functions (sida arcsin, arccos, arctan). Waxay naga caawiyaan inaan helno xagal marka la yaqaan saamiga dhinacyada."})
+    createCivilLesson('exponential-logarithmic-functions', 'Shaqooyinka Exponential iyo Logarithmic', {
+        whatIsIt: "Shaqooyinka Exponential iyo Logarithmic waxay ka mid yihiin shaqooyinka ugu muhiimsan ee calculus-ka. Shaqooyinkan waxaa lagu isticmaalaa dhinacyo kala duwan oo dhismaha.",
+        whyIsItImportant: "Qorsheynta Kaydka Tamarta Guryaha: Marka aad qorsheynayso guri,waxaad u baahan tahay inaad hisaabiso inta tamar ah ee gurigu uu kaydinayo. Shaqooyinka exponential waxay kuu caawin doonaan hisaabidaas.",
+        howItWorks: "Tamarta kaydsan: `T(t) = T₀ × e^(-kt)`\nHalkee:\n- `T(t)` = Tamarta kaydsan marka t\n- `T₀` = Tamarta bilowga\n- `k` = Constant\n- `e` = Numberka exponential (≈ 2.718)",
+        examples: "Haddii gurigu leeyahay tamar 1000W oo ay kaydsanayso si exponential ah, 2 saacadood kadib:\n`T(2)= 1000 × e^(-0.1×2) = 1000 × e^(-0.2) ≈ 819W`",
+        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Qorsheynta nidaamka kaydka tamarta\n• Hisaabida khasaaraha tamarta\n• Qorsheynta diyaaradaha guryaha" }
+    }),
+    createCivilLesson('trig-sine-cosine', 'Shaqooyinka Trigonometric - Sine iyo Cosine', {
+        whatIsIt: "Shaqooyinka Trigonometric waxaa lagu isticmaalaa xisaabinta xoogagga kala-socda (oscillating forces) ee ku dhaqma dhismooyinka.",
+        whyIsItImportant: "Qorsheynta Dhismo Xoogagga Daandaansiinta Ku Dhaqma: Marka aad dhisayso dhismo ku yaal goob daandaansiinta ah (sida xeebaha), waxaad u baahan tahay inaad xisaabiso xoogagga kala-socda ee biyaha.",
+        howItWorks: "Xoogga biyaha: `F(t) = A × sin(ωt + φ)`\nHalkee:\n- `A` = Xoogga ugu weyn\n- `ω` = Xawaaraha kala-socda\n- `t` = Wakhtiga\n- `φ` = Xagasha bilowga",
+        examples: "Dhismo ku yaal xeebta, xoogga biyaha:\n`F(t)= 5000 × sin(2πt + π/4)`\nWakhti t=2, xooggu waa:\n`F(2)= 5000 × sin(4π + π/4) ≈ 3536N`",
+        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Dhisidda dhismooyinka xeebaha\n• Qorsheynta kannyooyinka biyaha\n• Sahaminta xoogagga daandaansiinta" }
+    }),
+    createCivilLesson('inverse-trig-functions-roof', 'Shaqooyinka Inverse Trigonometric', {
+        whatIsIt: "Shaqooyinka Inverse Trigonometric waxay noo celinayaan xagasha marka aan ognahay qiimaha sine, cosine, ama tangent.",
+        whyIsItImportant: "Qorsheynta Saqafka Qaloocan: Marka aad dhisayso saqaf qaloocan, waxaad u baahan tahay inaad ogaato xagasha ugu fiican si aad u yareysid isticmaalka birta.",
+        howItWorks: "Xagal saqaf: `θ = arcsin(h/L)`\nHalkee:\n- `h` = Joogga saqafka\n- `L` = Dhererka birta\n- `θ` = Xagalka saqafka",
+        examples: "Saqaf leh joog 3m iyo dherer 5m:\n`θ= arcsin(3/5) = arcsin(0.6) ≈ 36.87°`",
+        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Qorsheynta saqafyada qaloocan\n• Dhisidda kannyooyinka qaloocan\n• Qaab-dhismeedka birta qaloocan" }
+    }),
+    createCivilLesson('calculus-of-transcendentals', 'Differentiation iyo Integration ee Shaqooyinka Transcendental', {
+        whatIsIt: "Shaqooyinka Transcendental waxaa loo isticmaali karaa differentiation iyo integration si loo xalliyo dhibaatooyinka dhabta ah ee dhismaha.",
+        whyIsItImportant: "Xisaabinta Culeyska Saqaf Qaloocan: Waxaad rabtaa inaad ogaato culeyska guud ee saqaf qaloocan.",
+        howItWorks: "Culeyska saqaf: `w(x) = w₀ × cos(πx/L)`\nCuleyska guud: `W = ∫ w₀ × cos(πx/L) dx`",
+        examples: "Saqaf leh dherer 10m, culeys 50kg/m:\n`W = ∫₀¹⁰ 50 × cos(πx/10) dx`\n`= [50 × (10/π) × sin(πx/10)]` laga bilaabo 0 ilaa 10\n`= (500/π) × [sin(π) - sin(0)] = (500/π) × [0 - 0] = 0 kg`\nTani waxay muujineysaa in xoogga saafiga ah (net force) ee culeyskan simmetrical-ka ah uu yahay eber.",
+        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Xisaabinta culeyska qaloocan\n• Qorsheynta saqafyada geesinka ah\n• Hisaabida birta la bixiyay" }
+    })
 ];
 
 const integration_techniques = [
-    createCivilLesson('integration-by-substitution', 'Integration by Substitution', { whatIsIt: "Waa farsamo loo isticmaalo in lagu fududeeyo integral-lada iyadoo la beddelayo qayb ka mid ah integral-ka doorsoome cusub (sida 'u'). Waa habka rogaal-celiska ah ee Chain Rule."}),
-    createCivilLesson('integration-by-parts', 'Integration by Parts', { whatIsIt: "Waa farsamo loo isticmaalo isku-dhexfidinta taran-dhigga (product) laba funkshan. Waxay ka timid Product Rule ee differentiation-ka. Qaacidada waa: ∫u dv = uv - ∫v du."}),
-    createCivilLesson('partial-fractions', 'Partial Fractions', { whatIsIt: "Waa farsamo aljebra ah oo loo isticmaalo in lagu burburiyo jajab adag oo razional ah (rational fraction) oo loo beddelo isku-darka jajabyo fudud oo si sahlan loo isku-dhexfidin karo."})
+    createCivilLesson('integration-substitution-volume', 'Integration by Substitution', {
+        whatIsIt: "Integration by Substitution waa habka ugu fudud ee integration-ka. Waxaa loo isticmaalaa marka shaqadu ay tahay mid adag oo aan la integreyn karin si toos ah.",
+        whyIsItImportant: "Xisaabinta Mugga Tiir Qaloocan: Waxaad rabtaa inaad ogaato mugga tiir qaloocan oo leh qaab cilindir ah laakiin leh bed kala duwan.",
+        howItWorks: "Mugga tiir: `V = ∫ A(x) dx`\n`A(x) = π × [r(x)]²`\n`r(x) = 2 + sin(πx/10)`",
+        examples: "`V = ∫₀¹⁰ π × (2 + sin(πx/10))² dx`\nHaddii aan dhigno `u = πx/10`, markaas `du = (π/10) dx`.\n`V = (10/π) ∫ π × (2 + sin(u))² du`",
+        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Xisaabinta mugga qalabka qaloocan\n• Qorsheynta birta la bixiyay\n• Hisaabida kaydka qalabka" }
+    }),
+    createCivilLesson('integration-parts-load', 'Integration by Parts', {
+        whatIsIt: "Integration by Parts waa hab integration-ka oo lagu isticmaalo marka shaqadu ay ka kooban tahay isku dhufasho laba shaqoood.",
+        whyIsItImportant: "Xisaabinta Culeyska Birta Goynta: Waxaad rabtaa inaad xisaabiso culeyska birta goynta oo leh qaab kala duwan.",
+        howItWorks: "Culeyska: `W = ∫ x × f(x) dx`\nHalkee `f(x) = √(x² + 1)`\nMarka loo eego qaacidada: `∫ u dv = uv - ∫ v du`, waxaan dhigi karnaa `u = x` iyo `dv = √(x² + 1) dx`",
+        examples: "Si aan u xallino `∫ x√(x² + 1) dx`, waxaa fudud inaan isticmaalno substitution:\n`u = x² + 1`, markaas `du = 2x dx`.\n`∫ x√(x² + 1) dx = (1/2) ∫ √u du = (1/2) × (2/3)u³/² + C = (1/3)(x² + 1)³/² + C`",
+        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Xisaabinta culeyska qalabka qaloocan\n• Qorsheynta birta la bixiyay\n• Hisaabida miisaanka dhismaha" }
+    }),
+    createCivilLesson('integration-partial-fractions', 'Integration by Partial Fractions', {
+        whatIsIt: "Partial Fractions waa habka lagu kala jarjaro shaqooyinka rational si loo fududeeyo integration-ka.",
+        whyIsItImportant: "Xisaabinta Culeyska Daqaad Kala Duwan: Waxaad rabtaa inaad xisaabiso culeyska daqaad leh qaab kala duwan.",
+        howItWorks: "Culeyska: `W = ∫ [1/(x² - 1)] dx`\nWaxaan u kala jajabineynaa:\n`1/(x² - 1) = A/(x - 1) + B/(x + 1)`",
+        examples: "Marka la xalliyo A iyo B, waxaan helaynaa `A = 1/2` iyo `B = -1/2`.\nSidaa darteed:\n`∫ [1/(x² - 1)] dx = ∫ [ (1/2)/(x-1) - (1/2)/(x+1) ] dx`\n`= (1/2)[ln|x-1| - ln|x+1|] + C`",
+        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Xisaabinta culeyska daqaadyada kala duwan\n• Qorsheynta birta la bixiyay\n• Hisaabida qalabka dhismaha" }
+    })
 ];
+
 
 // Qaybta 2aad: Physics I (Mechanics)
 const physics_units_measurements = [
@@ -407,6 +358,7 @@ export const civilEngineeringDiscipline: Discipline = {
   name: 'Civil Engineering',
   icon: BuildingIcon,
   description: 'Naqshadee, dhis, oo dayactir kaabayaasha aasaasiga ah ee bulshada casriga ah.',
+  labs: civilEngineeringLabs,
   levels: [
     {
       id: 'civil-year-1',
@@ -524,7 +476,7 @@ export const civilEngineeringDiscipline: Discipline = {
                             explanation: "Shamiitada awoodda sare leh ayaa loo isticmaalaa inay qaado culeyska weyn ee cadaadiska ah ee ka dhasha miisaanka dhismaha oo dhan."
                         }
                     ]
-                }),
+                }, 'lab-compressive-strength'),
             ]},
             { id: 'civil-y2-m2', title: 'Cabbirka Dhulka iyo Biyaha', lessons: [
                 createCivilLesson('surveying', 'Surveying', { whatIsIt: "Sayniska iyo farshaxanka cabbirka saxda ah ee dusha dhulka si loo qorsheeyo mashaariicda." }),
@@ -532,7 +484,7 @@ export const civilEngineeringDiscipline: Discipline = {
             ]},
              { id: 'civil-y2-m3', title: 'Falanqaynta Qaab-dhismeedka Hordhaca ah', lessons: [
                 createCivilLesson('struct-analysis-1', 'Structural Analysis I', { whatIsIt: "Falanqaynta qaab-dhismeedyada go'an (statically determinate structures) sida beams, trusses, iyo frames." }),
-                createCivilLesson('materials-concrete', 'Civil Engineering Materials (Concrete)', { whatIsIt: "Barashada sifooyinka, naqshadaynta isku-darka, iyo tijaabinta shamiitada." }),
+                createCivilLesson('materials-concrete', 'Civil Engineering Materials (Concrete)', { whatIsIt: "Barashada sifooyinka, naqshadaynta isku-darka, iyo tijaabinta shamiitada." }, 'lab-slump-test'),
                 createCivilLesson('materials-steel', 'Civil Engineering Materials (Steel)', { whatIsIt: "Barashada sifooyinka, noocyada, iyo isticmaalka birta ee dhismaha." }),
             ]},
             { id: 'civil-y2-m4', title: 'Xirfadaha Sawirka iyo Xisaabta', lessons: [

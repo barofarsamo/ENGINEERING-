@@ -36,10 +36,11 @@ export interface Lesson {
     correctAnswer: string;
     explanation: string;
   }[];
+  labId?: string;
 }
 
 export interface Module {
-  id: string;
+  id:string;
   title: string;
   lessons: Lesson[];
 }
@@ -57,6 +58,7 @@ export interface Discipline {
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
   description: string;
   levels: Level[];
+  labs?: Lab[];
 }
 
 export interface ChatMessage {
@@ -72,3 +74,55 @@ export interface SearchResult {
 }
 
 export type DownloadStatus = 'not-downloaded' | 'downloading' | 'downloaded';
+
+
+// --- VIRTUAL LAB TYPES ---
+
+export interface LabDataTable {
+  headers: string[];
+  rows: (string | number)[][]; // For sample data
+}
+
+export type LabCategory = 'Concrete' | 'Soil' | 'Surveying' | 'Structural' | 'Hydraulics';
+
+export interface LabInputField {
+  id: string;
+  label: string;
+  unit: string;
+  defaultValue: string;
+  type: 'number' | 'text';
+}
+
+export interface LabCalculation {
+  formula: string;
+  description: string;
+}
+
+export interface LabStudentQuestion {
+    question: string;
+    answer: string;
+}
+
+export interface Lab {
+  id: string;
+  title: string;
+  category: LabCategory;
+  objective: string;
+  equipment: string[];
+  theory: string;
+  procedure: string[];
+  inputData: {
+    fields: LabInputField[];
+    sampleTable: LabDataTable;
+  };
+  calculations: LabCalculation[];
+  exampleCalculation: string;
+  interpretation: string;
+  studentQuestions: LabStudentQuestion[];
+  reportTemplate: string;
+  graph?: {
+    title: string;
+    xAxis: string;
+    yAxis: string;
+  };
+}

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { Lesson, Module } from '../types';
+import type { Lesson, Level, Module } from '../types';
 import { 
     CheckCircleIcon,
     AcademicCapIcon,
@@ -9,7 +9,9 @@ import {
     LightBulbIcon, 
     PlayIcon, 
     ClipboardListIcon, 
-    BeakerIcon 
+    BeakerIcon,
+    QuestionMarkCircleIcon,
+    ArrowRightIcon,
 } from './Icons';
 
 const KnowledgeCheck: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
@@ -79,7 +81,11 @@ interface LessonReaderProps {
   disciplineName: string;
   completedLessons: Set<string>;
   onCompleteModule: () => void;
-  onTermClick: (term: string) => void;
+  onTermClick: (term: string, context?: string) => void;
+  onGoToLab: (labId: string) => void;
+  onNavigateToNext: () => void;
+  nextNavigationTarget: { type: 'module' | 'chapter'; data: Module | Level } | null;
+  isLastModuleInDiscipline: boolean;
 }
 
 const LessonReader: React.FC<LessonReaderProps> = ({ 
@@ -87,42 +93,86 @@ const LessonReader: React.FC<LessonReaderProps> = ({
     disciplineName,
     completedLessons,
     onCompleteModule,
-    onTermClick
+    onTermClick,
+    onGoToLab,
+    onNavigateToNext,
+    nextNavigationTarget,
+    isLastModuleInDiscipline,
 }) => {
     
   const parseTextWithTerms = (text?: string) => {
       if (!text) return null;
-      const parts = text.split(/(\[\[.*?\]\])/g);
-      return <p>{parts.map((part, index) => {
-          if (part.startsWith('[[') && part.endsWith(']]')) {
-              const term = part.substring(2, part.length - 2);
-              return (
-                  <span
-                      key={index}
-                      className="underline text-brand-secondary font-semibold cursor-pointer hover:text-brand-accent transition-colors decoration-dotted"
-                      onClick={() => onTermClick(term)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onTermClick(term)}
-                      title={`Weydii AI-ga: Waa maxay ${term}?`}
-                  >
-                      {term}
-                  </span>
-              );
+      // Split by markdown-style code blocks first to preserve them
+      const codeBlockRegex = /(```[\s\S]*?```)/g;
+      const parts = text.split(codeBlockRegex);
+
+      return <div className="space-y-4">{parts.map((part, index) => {
+          if (codeBlockRegex.test(part)) {
+              const codeContent = part.replace(/```/g, '').trim();
+              return <pre key={index} className="bg-gray-800 text-white p-4 rounded-md overflow-x-auto text-sm"><code>{codeContent}</code></pre>;
           }
-          return part;
-      })}</p>;
+
+          // Split by newlines to create paragraphs
+          return part.split('\n').map((paragraph, pIndex) => {
+              if (paragraph.trim() === '') return null;
+              
+              // Now process for inline terms
+              const termRegex = /(\[\[.*?\]\])/g;
+              const inlineParts = paragraph.split(termRegex);
+
+              return <p key={`${index}-${pIndex}`}>{inlineParts.map((inlinePart, iIndex) => {
+                  if (termRegex.test(inlinePart)) {
+                      const term = inlinePart.substring(2, inlinePart.length - 2);
+                      return (
+                          <span
+                              key={iIndex}
+                              className="underline text-brand-secondary font-semibold cursor-pointer hover:text-brand-accent transition-colors decoration-dotted"
+                              onClick={() => onTermClick(term)}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onTermClick(term)}
+                              title={`Weydii AI-ga: Waa maxay ${term}?`}
+                          >
+                              {term}
+                          </span>
+                      );
+                  }
+                  return inlinePart;
+              })}</p>;
+          });
+      })}</div>;
   };
 
-  const renderSection = (title: string, content: string | undefined, icon: React.ReactElement) => {
+
+  const renderSection = (title: string, content: string | undefined, icon: React.ReactElement, lesson: Lesson) => {
     if (!content) return null;
     return (
         <div className="mb-8">
-            <h3 className="text-2xl font-bold text-brand-primary flex items-center mb-4">
-                {React.cloneElement(icon, { className: "h-7 w-7 mr-3 text-brand-secondary" })}
-                {title}
-            </h3>
-            <div className="prose prose-lg max-w-none text-gray-800 leading-relaxed">
+            <div className="flex justify-between items-center mb-4">
+                <h3 className="text-2xl font-bold text-brand-primary flex items-center">
+                    {React.cloneElement(icon, { className: "h-7 w-7 mr-3 text-brand-secondary" })}
+                    {title}
+                </h3>
+                <div className="flex items-center space-x-2">
+                    {lesson.labId && (
+                        <button 
+                            onClick={() => onGoToLab(lesson.labId as string)}
+                            className="p-2 rounded-full hover:bg-brand-secondary/10 transition-colors"
+                            title="Aad Shaybaarka Virtual-ka ah"
+                        >
+                            <BeakerIcon className="h-6 w-6 text-brand-secondary" />
+                        </button>
+                    )}
+                    <button 
+                         onClick={() => onTermClick(title, lesson.title)}
+                         className="p-2 rounded-full hover:bg-brand-secondary/10 transition-colors"
+                         title="Weydii AI-ga sharaxaad dheeri ah"
+                    >
+                        <QuestionMarkCircleIcon className="h-6 w-6 text-brand-secondary" />
+                    </button>
+                </div>
+            </div>
+            <div className="prose prose-lg max-w-none text-gray-800 leading-relaxed ml-10">
                 {parseTextWithTerms(content)}
             </div>
         </div>
@@ -158,13 +208,13 @@ const LessonReader: React.FC<LessonReaderProps> = ({
                     </figure>
 
                     <div className="bg-brand-primary/5 border-l-4 border-brand-secondary rounded-r-lg p-6 mb-10">
-                         {renderSection('Maxay Muhiim u Tahay Injineernimada Madaniga?', lesson.structuredContent.whyIsItImportant.content, <InformationCircleIcon />)}
+                         {renderSection('Maxay Muhiim u Tahay Injineernimada Madaniga?', lesson.structuredContent.whyIsItImportant.content, <InformationCircleIcon />, lesson)}
                     </div>
 
-                    {renderSection('Hordhac & Qeexitaan', lesson.structuredContent.whatIsIt.content, <LightBulbIcon />)}
-                    {renderSection('Sidee Buu u Shaqeeyaa?', lesson.structuredContent.howItWorks.content, <BeakerIcon />)}
-                    {renderSection('Tusaalooyin Dhab ah', lesson.structuredContent.examples.content, <PlayIcon />)}
-                    {renderSection('Aqoonta Lagaa Rabo', lesson.structuredContent.prerequisites.content, <BookOpenIcon />)}
+                    {renderSection('Hordhac & Qeexitaan', lesson.structuredContent.whatIsIt.content, <LightBulbIcon />, lesson)}
+                    {renderSection('Sidee Buu u Shaqeeyaa?', lesson.structuredContent.howItWorks.content, <PlayIcon />, lesson)}
+                    {renderSection('Tusaalooyin Dhab ah', lesson.structuredContent.examples.content, <BeakerIcon />, lesson)}
+                    {renderSection('Aqoonta Lagaa Rabo', lesson.structuredContent.prerequisites.content, <BookOpenIcon />, lesson)}
                     
                     <div className="my-12 py-8 border-t border-b border-base-300">
                          <h3 className="text-2xl font-bold text-brand-primary flex items-center mb-6 justify-center">
@@ -174,7 +224,7 @@ const LessonReader: React.FC<LessonReaderProps> = ({
                         <KnowledgeCheck lesson={lesson} />
                     </div>
 
-                    {renderSection('Soo Koobid', `**Soo koobid:** Casharkan waxaan si qoto dheer u eegnay **${lesson.title}**. Waxaan barannay ${lesson.structuredContent.whatIsIt.content.toLowerCase().substring(0, 100)}...`, <ClipboardListIcon />)}
+                    {renderSection('Soo Koobid', `**Soo koobid:** Casharkan waxaan si qoto dheer u eegnay **${lesson.title}**. Waxaan barannay ${lesson.structuredContent.whatIsIt.content.toLowerCase().substring(0, 100)}...`, <ClipboardListIcon />, lesson)}
                 </div>
             ))}
 
@@ -185,13 +235,25 @@ const LessonReader: React.FC<LessonReaderProps> = ({
                         Qaybtan Waa La Dhammaystiray!
                     </div>
                 )}
-                <button 
-                    onClick={onCompleteModule}
-                    className="w-full flex items-center justify-center px-6 py-4 bg-brand-secondary text-white font-bold rounded-lg hover:bg-brand-secondary/90 transition-colors text-lg"
-                >
-                    Dhammee Qaybtan oo Dhan
-                    <AcademicCapIcon className="h-6 w-6 ml-3" />
-                </button>
+                
+                {isLastModuleInDiscipline ? (
+                    <button 
+                        onClick={onCompleteModule}
+                        className="w-full flex items-center justify-center px-6 py-4 bg-brand-secondary text-white font-bold rounded-lg hover:bg-brand-secondary/90 transition-colors text-lg"
+                    >
+                        Dhammee Qaybta Injineernimada
+                        <AcademicCapIcon className="h-6 w-6 ml-3" />
+                    </button>
+                ) : (
+                    <button
+                        onClick={onNavigateToNext}
+                        disabled={!nextNavigationTarget}
+                        className="w-full flex items-center justify-center px-6 py-4 bg-brand-primary text-white font-bold rounded-lg hover:bg-brand-primary/90 transition-colors text-lg disabled:bg-gray-400"
+                    >
+                        {nextNavigationTarget?.type === 'module' ? 'U gudub Qaybta Xigta' : 'U gudub Cutubka Xiga'}
+                        <ArrowRightIcon className="h-5 w-5 ml-3" />
+                    </button>
+                )}
             </div>
         </div>
     </div>

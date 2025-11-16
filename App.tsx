@@ -10,12 +10,16 @@ import ChapterBrowser from './components/ChapterBrowser';
 import LessonBrowser from './components/LessonBrowser';
 import UnitConverter from './components/UnitConverter';
 import LoadCalculator from './components/LoadCalculator';
+import VirtualLab from './components/VirtualLab';
 import { disciplines } from './constants';
-import type { Discipline, Lesson, SearchResult, Level, Module } from './types';
+import type { Discipline, Lesson, SearchResult, Level, Module, Lab } from './types';
 import { useProgress } from './hooks/useProgress';
 import { useDownloads } from './hooks/useDownloads';
 import { SpinnerIcon, AcademicCapIcon, BookOpenIcon, BuildingIcon, ArrowRightIcon, XIcon } from './components/Icons';
 import { useMediaQuery } from './hooks/useMediaQuery';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { auth } from './firebase';
+import AuthModal from './components/AuthModal';
 
 const LoadingScreen: React.FC = () => (
   <div className="flex flex-col items-center justify-center h-screen bg-base-200 text-center p-4">
@@ -29,7 +33,7 @@ const LoadingScreen: React.FC = () => (
   </div>
 );
 
-type ViewMode = 'BROWSE' | 'LEARN' | 'CERTIFICATE' | 'CHAPTER_BROWSE' | 'LESSON_BROWSE' | 'TOOLS_UNIT_CONVERTER' | 'TOOLS_LOAD_CALCULATOR';
+type ViewMode = 'BROWSE' | 'LEARN' | 'CERTIFICATE' | 'CHAPTER_BROWSE' | 'LESSON_BROWSE' | 'TOOLS_UNIT_CONVERTER' | 'TOOLS_LOAD_CALCULATOR' | 'VIRTUAL_LAB';
 
 const App: React.FC = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -38,10 +42,22 @@ const App: React.FC = () => {
   const [selectedChapter, setSelectedChapter] = useState<Level | null>(null);
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+  const [selectedLab, setSelectedLab] = useState<Lab | null>(null);
   const [isSidebarOpen, setSidebarOpen] = useState(!isMobile);
   const [isTutorOpen, setTutorOpen] = useState(!isMobile);
   const [tutorInitialPrompt, setTutorInitialPrompt] = useState<string | null>(null);
   const [isCompletionModalOpen, setCompletionModalOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+  const [authIsLoading, setAuthIsLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthIsLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
 
   const {
@@ -82,6 +98,38 @@ const App: React.FC = () => {
     if (!selectedDiscipline) return new Set<string>();
     return getUnlockedLevels(selectedDiscipline.id);
   }, [selectedDiscipline, getUnlockedLevels]);
+  
+  const { nextNavigationTarget, isLastModuleInDiscipline } = useMemo(() => {
+    if (!selectedDiscipline || !selectedChapter || !selectedModule) {
+      return { nextNavigationTarget: null, isLastModuleInDiscipline: false };
+    }
+
+    const currentChapterIndex = selectedDiscipline.levels.findIndex(l => l.id === selectedChapter.id);
+    if (currentChapterIndex === -1) return { nextNavigationTarget: null, isLastModuleInDiscipline: false };
+
+    const currentModuleIndex = selectedChapter.modules.findIndex(m => m.id === selectedModule.id);
+    if (currentModuleIndex === -1) return { nextNavigationTarget: null, isLastModuleInDiscipline: false };
+
+    // Check for next module in the same chapter
+    if (currentModuleIndex < selectedChapter.modules.length - 1) {
+      const nextModule = selectedChapter.modules[currentModuleIndex + 1];
+      return { nextNavigationTarget: { type: 'module', data: nextModule }, isLastModuleInDiscipline: false };
+    }
+
+    // Check for next chapter in the same discipline
+    if (currentChapterIndex < selectedDiscipline.levels.length - 1) {
+      const nextChapter = selectedDiscipline.levels[currentChapterIndex + 1];
+      return { nextNavigationTarget: { type: 'chapter', data: nextChapter }, isLastModuleInDiscipline: false };
+    }
+    
+    // This is the end of the discipline
+    const lastLevel = selectedDiscipline.levels[selectedDiscipline.levels.length - 1];
+    const lastModule = lastLevel.modules[lastLevel.modules.length - 1];
+    const isLast = selectedModule.id === lastModule.id;
+
+    return { nextNavigationTarget: null, isLastModuleInDiscipline: isLast };
+  }, [selectedDiscipline, selectedChapter, selectedModule]);
+
 
   const handleSelectLesson = (lesson: Lesson) => {
     const lessonLevel = selectedDiscipline?.levels.find(level => 
@@ -164,15 +212,40 @@ const App: React.FC = () => {
     setSelectedLesson(null);
     setSelectedChapter(null);
     setSelectedModule(null);
+    setSelectedLab(null);
   };
   
   const handleCompleteModule = () => {
     if (selectedModule) {
       const lessonIds = selectedModule.lessons.map(l => l.id);
       markModuleAsComplete(lessonIds);
-      setCompletionModalOpen(true);
+      if (isLastModuleInDiscipline) {
+        setViewMode('CERTIFICATE');
+      } else {
+        setCompletionModalOpen(true);
+      }
     }
   };
+
+  const handleNavigateToNext = () => {
+    if (!nextNavigationTarget || !selectedModule) {
+      return;
+    }
+    
+    // Silently mark current module as complete
+    const lessonIds = selectedModule.lessons.map(l => l.id);
+    markModuleAsComplete(lessonIds);
+
+
+    if (nextNavigationTarget.type === 'module') {
+      const nextModule = nextNavigationTarget.data as Module;
+      handleSelectModule(nextModule); 
+    } else if (nextNavigationTarget.type === 'chapter') {
+      const nextChapter = nextNavigationTarget.data as Level;
+      handleSelectChapter(nextChapter);
+    }
+  };
+
 
   const handleGoToNextModule = () => {
     setCompletionModalOpen(false);
@@ -194,12 +267,24 @@ const App: React.FC = () => {
     handleGoHome();
   };
 
-  const handleTermClick = (term: string) => {
-    setTutorInitialPrompt(`Fadlan si faahfaahsan iigu sharax waxa loola jeedo "${term}" marka loo eego casharkan.`);
+  const handleTermClick = (term: string, context?: string) => {
+    const prompt = context 
+      ? `Marka loo eego macnaha guud ee "${context}", fadlan si faahfaahsan iigu sharax aragtida ka dambaysa.`
+      : `Fadlan si faahfaahsan iigu sharax waxa loola jeedo "${term}" marka loo eego casharkan.`;
+    setTutorInitialPrompt(prompt);
     if(!isTutorOpen) {
       setTutorOpen(true);
     }
   };
+
+  const handleGoToLab = (labId: string) => {
+    if (!selectedDiscipline || !selectedDiscipline.labs) return;
+    const lab = selectedDiscipline.labs.find(l => l.id === labId);
+    if (lab) {
+      setSelectedLab(lab);
+      setViewMode('VIRTUAL_LAB');
+    }
+  }
   
   const renderContent = () => {
     switch(viewMode) {
@@ -221,6 +306,10 @@ const App: React.FC = () => {
             <ChapterBrowser 
                 discipline={selectedDiscipline}
                 onSelectChapter={handleSelectChapter}
+                onGoToLabs={() => {
+                  setSelectedLab(null);
+                  setViewMode('VIRTUAL_LAB');
+                }}
             />
         ) : null;
       case 'LESSON_BROWSE':
@@ -228,6 +317,21 @@ const App: React.FC = () => {
             <LessonBrowser
                 chapter={selectedChapter}
                 onSelectModule={handleSelectModule}
+            />
+        ) : null;
+      case 'VIRTUAL_LAB':
+        return selectedDiscipline ? (
+            <VirtualLab
+                discipline={selectedDiscipline}
+                selectedLab={selectedLab}
+                onSelectLab={setSelectedLab}
+                onGoBack={() => {
+                    if (selectedLab) {
+                        setSelectedLab(null);
+                    } else {
+                        setViewMode('CHAPTER_BROWSE');
+                    }
+                }}
             />
         ) : null;
       case 'CERTIFICATE':
@@ -261,6 +365,10 @@ const App: React.FC = () => {
                   completedLessons={completedLessons}
                   onCompleteModule={handleCompleteModule}
                   onTermClick={handleTermClick}
+                  onGoToLab={handleGoToLab}
+                  onNavigateToNext={handleNavigateToNext}
+                  nextNavigationTarget={nextNavigationTarget}
+                  isLastModuleInDiscipline={isLastModuleInDiscipline}
                 />
               ) : (
                 <div className="p-8 text-center text-gray-500">
@@ -284,7 +392,7 @@ const App: React.FC = () => {
     }
   };
 
-  if (!isLoaded) {
+  if (!isLoaded || authIsLoading) {
     return <LoadingScreen />;
   }
 
@@ -298,6 +406,8 @@ const App: React.FC = () => {
         onSelectSearchResult={handleSelectSearchResult}
         onGoHome={handleGoHome}
         onSelectTool={(tool) => setViewMode(tool as ViewMode)}
+        user={user}
+        onOpenAuthModal={() => setAuthModalOpen(true)}
       />
       {renderContent()}
 
@@ -336,6 +446,7 @@ const App: React.FC = () => {
             </div>
         </div>
       )}
+       <AuthModal isOpen={isAuthModalOpen} onClose={() => setAuthModalOpen(false)} />
     </div>
   );
 };

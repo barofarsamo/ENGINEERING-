@@ -198,7 +198,8 @@ export const InformationCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (p
 
 export const BeakerIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 7.5l.41-1.64a2 2 0 011.98-1.49h.22a2 2 0 011.98 1.5l.41 1.64m-3 .01H12m0 0h1.59M12 7.5v9.57m-3.41-5.11L5.59 7.5M15.41 12l2-4.5m-5.82 9.57L6.59 14.5M17.41 14.5L12 21.97m0 0L6.59 14.5M12 21.97l5.41-7.47" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21V11.25" />
     </svg>
 );
 
@@ -211,5 +212,31 @@ export const WrenchScrewdriverIcon: React.FC<React.SVGProps<SVGSVGElement>> = (p
 export const CalculatorIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-4.5 .75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm-2.25-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm-2.25-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm-2.25-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008v-.008zM4.5 6.75h15A2.25 2.25 0 0121.75 9v10.5A2.25 2.25 0 0119.5 21.75h-15A2.25 2.25 0 012.25 19.5V9A2.25 2.25 0 014.5 6.75z" />
+    </svg>
+);
+
+export const QuestionMarkCircleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+    </svg>
+);
+
+export const ShareIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.195.025.39.05.588.082a2.25 2.25 0 011.636 2.083c.041.362.08.723.124 1.084.062.516.142 1.023.235 1.524a2.25 2.25 0 002.12.214l4.204-1.502a2.25 2.25 0 001.298-2.617c-.033-.12-.068-.24-.106-.358a2.25 2.25 0 00-2.288-1.086c-.5.094-1.003.204-1.504.324a2.25 2.25 0 01-2.083-1.636c-.046-.362-.09-.723-.134-1.084-.062-.516-.142-1.023-.235-1.524a2.25 2.25 0 00-2.12-.214l-4.204 1.502a2.25 2.25 0 00-1.298 2.617c.033.12.068.24.106.358a2.25 2.25 0 002.288 1.086c.5-.094 1.003-.204 1.504-.324a2.25 2.25 0 012.083 1.636 2.25 2.25 0 01-1.086 2.288c-.118.038-.239.073-.358.106a2.25 2.25 0 01-2.617-1.298l-1.502-4.204a2.25 2.25 0 01.214-2.12zM12 12a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+    </svg>
+);
+
+export const SealIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" {...props}>
+        <circle cx="50" cy="50" r="48" fill="none" stroke="#0A2540" strokeWidth="2"/>
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#0A2540" strokeWidth="1" strokeDasharray="4 2"/>
+        <path id="circlePath" d="M 15, 50 a 35,35 0 1,1 70,0 35,35 0 1,1 -70,0" fill="none"/>
+        <text fill="#0A2540" fontSize="8" fontWeight="bold" letterSpacing="0.2">
+            <textPath href="#circlePath" startOffset="50%" textAnchor="middle">
+                SAHAN ENGINEERING ★ SEAL OF EXCELLENCE ★
+            </textPath>
+        </text>
+        <path d="M50 30 L55 45 L70 45 L58 55 L63 70 L50 60 L37 70 L42 55 L30 45 L45 45 Z" fill="#FFD700" stroke="#0A2540" strokeWidth="1"/>
     </svg>
 );

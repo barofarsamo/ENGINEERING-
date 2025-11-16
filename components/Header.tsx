@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MenuIcon, SparklesIcon, UserCircleIcon, SearchIcon, XIcon, BookOpenIcon, WrenchScrewdriverIcon, CalculatorIcon, BeakerIcon } from './Icons';
 import type { Discipline, Lesson, SearchResult } from '../types';
 import { useMediaQuery } from '../hooks/useMediaQuery';
+import { User, signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -12,6 +15,8 @@ interface HeaderProps {
   onSelectSearchResult: (result: SearchResult) => void;
   onGoHome: () => void;
   onSelectTool: (tool: 'TOOLS_UNIT_CONVERTER' | 'TOOLS_LOAD_CALCULATOR') => void;
+  user: User | null;
+  onOpenAuthModal: () => void;
 }
 
 const SearchModal: React.FC<{
@@ -137,12 +142,14 @@ const SearchModal: React.FC<{
 }
 
 
-const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onToggleTutor, disciplines, onSelectDiscipline, onSelectSearchResult, onGoHome, onSelectTool }) => {
+const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onToggleTutor, disciplines, onSelectDiscipline, onSelectSearchResult, onGoHome, onSelectTool, user, onOpenAuthModal }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState<{disciplines: Discipline[], lessons: SearchResult[]}>({disciplines: [], lessons: []});
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const [isToolsOpen, setToolsOpen] = useState(false);
   const toolsRef = useRef<HTMLDivElement>(null);
+  const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [isSearchModalOpen, setSearchModalOpen] = useState(false);
 
@@ -186,6 +193,9 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onToggleTutor, discipl
       if (toolsRef.current && !toolsRef.current.contains(event.target as Node)) {
         setToolsOpen(false);
       }
+       if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setProfileMenuOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -216,6 +226,11 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onToggleTutor, discipl
   
   const handleClearSearch = () => {
     setSearchTerm('');
+  };
+
+  const handleSignOut = () => {
+    signOut(auth);
+    setProfileMenuOpen(false);
   };
 
   const showResults = searchTerm.length > 1 && (results.disciplines.length > 0 || results.lessons.length > 0);
@@ -324,9 +339,31 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onToggleTutor, discipl
                 </div>
             )}
         </div>
-        <button className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-brand-accent">
-          <UserCircleIcon className="h-7 w-7" />
-        </button>
+        <div ref={profileRef} className="relative">
+            <button onClick={() => {
+                if (user) {
+                    setProfileMenuOpen(!isProfileMenuOpen);
+                } else {
+                    onOpenAuthModal();
+                }
+            }} className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-brand-accent">
+                <UserCircleIcon className="h-7 w-7" />
+            </button>
+            {user && isProfileMenuOpen && (
+                <div className="absolute top-full right-0 mt-2 w-56 bg-base-100 rounded-lg shadow-lg overflow-hidden text-base-content py-2">
+                    <div className="px-4 py-3 border-b border-base-300">
+                        <p className="text-sm font-semibold">Ku soo galay:</p>
+                        <p className="text-sm text-gray-600 truncate">{user.email}</p>
+                    </div>
+                    <button
+                        onClick={handleSignOut}
+                        className="w-full text-left flex items-center px-4 py-3 hover:bg-base-200 transition-colors text-red-600"
+                    >
+                        Ka Bax
+                    </button>
+                </div>
+            )}
+        </div>
          <button onClick={onToggleTutor} className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-brand-accent md:hidden">
           <SparklesIcon className="h-6 w-6" />
         </button>

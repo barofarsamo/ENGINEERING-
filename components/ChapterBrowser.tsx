@@ -1,14 +1,15 @@
 
 import React from 'react';
 import type { Discipline, Level } from '../types';
-import { ArrowRightIcon } from './Icons';
+import { ArrowRightIcon, BeakerIcon } from './Icons';
 
 interface ChapterBrowserProps {
   discipline: Discipline;
   onSelectChapter: (chapter: Level) => void;
+  onGoToLabs: () => void;
 }
 
-const ChapterBrowser: React.FC<ChapterBrowserProps> = ({ discipline, onSelectChapter }) => {
+const ChapterBrowser: React.FC<ChapterBrowserProps> = ({ discipline, onSelectChapter, onGoToLabs }) => {
   return (
     <div className="flex-1 overflow-y-auto p-4 md:p-8 bg-base-200">
       <div className="max-w-4xl mx-auto">
@@ -16,6 +17,22 @@ const ChapterBrowser: React.FC<ChapterBrowserProps> = ({ discipline, onSelectCha
           <discipline.icon className="h-16 w-16 text-brand-secondary mb-4 mx-auto" />
           <h1 className="text-4xl font-bold text-brand-primary mb-2">{discipline.name}</h1>
           <p className="text-lg text-gray-600">{discipline.description}</p>
+        </div>
+
+        <div className="my-8">
+            <button
+                onClick={onGoToLabs}
+                className="group w-full bg-brand-accent text-brand-primary rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-left flex items-center justify-between hover:-translate-y-1"
+            >
+                <div className="flex items-center">
+                    <BeakerIcon className="h-10 w-10 mr-4"/>
+                    <div>
+                        <h3 className="text-xl font-bold">Shaybaarka Virtual-ka ah</h3>
+                        <p className="text-sm mt-1">Samee tijaabooyin wax ku ool ah oo la xiriira casharadaada.</p>
+                    </div>
+                </div>
+                <ArrowRightIcon className="h-6 w-6 transform group-hover:translate-x-1 transition-transform" />
+            </button>
         </div>
         
         <div className="space-y-4">
