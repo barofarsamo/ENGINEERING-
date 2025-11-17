@@ -223,90 +223,252 @@ const calculus_derivatives = [
 ];
 
 const calculus_integration = [
-    createCivilLesson('integration-basics', 'CASHAR 1: Aasaaska Integration', {
-        whatIsIt: "Integration waa habka lagu helo 'anti-derivative' ee shaqo. Si kale haddii loo dhigo, waa soo uruurinta isbeddellada yaryar si loo helo wadarta guud. Haddii derivative-ku yahay kala-bixinta, integration-ku waa isku-keenidda.",
-        whyIsItImportant: "Marka aan naqaanno culeyska ku qaybsan dogob, integration-ku wuxuu na siinayaa culeyska guud ee ay tahay in tiirarku qaadaan. Sidoo kale, wuxuu noo oggolaanayaa inaan xisaabino bedka iyo mugga qaababka aan joogtada ahayn.",
-        howItWorks: `**Tusaale Xisaabeed: Xisaabinta Culeyska Guud ee Dogob**\nDogob dhererkiisu yahay 5m waxaa saaran culeys aan sinnayn oo ku qaybsan, kaasoo lagu matalo shaqada \`w(x) = 2x\` N/m (culeysku wuu kordhayaa marka laga fogaado bilowga). Waa maxay culeyska guud ee saaran dogobka?\n\n1. **Samee Integral-ka:** Culeyska guud waa integral-ka shaqada culeyska laga bilaabo 0 ilaa 5:\n   \`Culeyska Guud = ∫₀⁵ 2x dx\`\n2. **Soo Hel Anti-derivative-ka:** Anti-derivative-ka \`2x\` waa \`x²\`.\n3. **Qiimee:** Waxaan qiimeyneynaa anti-derivative-ka inta u dhaxaysa 0 iyo 5:\n   \`[x²]₀⁵ = 5² - 0² = 25\`\n\n**Fasiraad:** Culeyska guud ee ay tahay in dogobku qaado waa 25 Newton. Aqoontani waxay muhiim u tahay naqshadaynta tiirarka iyo aasaaska.`,
+    createCivilLesson('integration-basics', 'CASHAR 1: Aasaaska Integration iyo Qeexida', {
+        whatIsIt: "Integration waa hab xisaabeed oo lagu uruuriyo isbeddelada yar-yar ee aan la koobi karin si loo helo wadarta guud. Haddii differentiation-ku yahay kala-saarid, integration-ku waa isku-keenid. Waa habka lagu helo 'anti-derivative' ee shaqo.",
+        whyIsItImportant: "Wuxuu muhiim u yahay in la helo tirooyin sax ah oo la taaban karo. Marka aan naqaanno culeyska ku qaybsan dogob, integration-ku wuxuu na siinayaa culeyska guud ee ay tahay in tiirarku qaadaan. Waxay noo oggolaanaysaa inaan xisaabino bedka iyo mugga qaababka aan joogtada ahayn.",
+        howItWorks: `**Qaacidada Guud:**
+\`∫ f(x) dx = F(x) + C\`
+- **∫**: Summada isku darka (Integration symbol)
+- **f(x)**: Shaqada aad wadarta u rabto (tusaale, shaqada culeyska)
+- **dx**: Isbeddelka aadka u yar ee 'x'
+- **F(x)**: Shaqada asalka ah (Anti-derivative)
+- **C**: Constant-ka Integration-ka (qiime joogto ah oo la iska indho tiro marka la xisaabinayo bedka/mugga xaddidan).
+
+**Sida Loo Shaqeeyo:**
+1.  Qeexi shaqada aad wadarta guud u raadinayso.
+2.  Raadi shaqada asalka ah (anti-derivative) ee shaqadaas.
+3.  Ku dar constant-ka 'C' haddii uu yahay integral aan xaddidnayn.`,
+        examples: `**Tusaale Dhismaha:**
+Marka aad dhisayso daaqad leh qaab qaloocan, ma iska darsan kartid culeyska guud ee daaqadda. Waa inaad isku dartaa culeyska saaran meel kasta oo yar oo daaqadda ka mid ah si aad u hesho culeyska guud. Integration-ku waa habka xisaabeed ee tan loo sameeyo.
+
+**Tusaale Nololeed:**
+Sida mayaqaanka shaqeeya uusan isugu darin mushaharka saddex bilood hal mar, laakiin uu u helo mushahar kasta goonidiisa, integration-ku wuxuu isku daraa qayb kasta oo yar si loo helo wadarta guud.`,
         quiz: [
             {
-                question: "Maxay matalaysaa definite integral-ka ∫ₐᵇ f(x)dx joomatari ahaan?",
-                options: ["Jiirada qalooca", "Bedka saafiga ah ee u dhexeeya qalooca f(x) iyo x-axis-ka", "Dhererka qalooca", "Qiimaha ugu sarreeya ee f(x)"],
-                correctAnswer: "Bedka saafiga ah ee u dhexeeya qalooca f(x) iyo x-axis-ka",
-                explanation: "Fasiraadda aasaasiga ah ee definite integral waa bedka gobolka ku xaddidan garaafka iyo x-axis-ka."
+                question: "Integration-ku muxuu ka soo horjeedaa xisaab ahaan?",
+                options: ["Isku-dhufasho", "Kala-qaybin", "Differentiation", "Isku-dar"],
+                correctAnswer: "Differentiation",
+                explanation: "Integration waa habka rogaal-celiska ah ee differentiation. Mid wuxuu isku-daraa, midna wuu kala-jajabiyaa isbeddelada."
+            },
+            {
+                question: "Maxay 'C' ku matalaysaa qaacidada ∫ f(x) dx = F(x) + C?",
+                options: ["Culeyska", "Constant-ka Integration-ka", "Qiimaha ugu sarreeya", "Bedka"],
+                correctAnswer: "Constant-ka Integration-ka",
+                explanation: "Wuxuu matalayaa qoys dhan oo shaqooyin ah oo leh derivative isku mid ah. Waa qiime joogto ah oo ku darsama natiijada."
             }
         ]
     }),
-    createCivilLesson('integration-rules-basics', 'CASHAR 2: Qawaaniinta Integration', {
-        whatIsIt: `Sida differentiation-ka, integration-ku wuxuu leeyahay qawaaniin fududeynaya habka. Kuwa ugu muhiimsan waa:
-1.  **Power Rule:** \`∫xⁿ dx = (xⁿ⁺¹)/(n+1) + C\`
-2.  **Integration by Substitution:** Waa habka rogaal-celiska ah ee Chain Rule, loo isticmaalo shaqooyinka isku-dhafan.`,
-        whyIsItImportant: "Qawaaniintan ayaa ah qalabka lagama maarmaanka u ah xallinta dhibaatooyin injineernimo oo badan oo ku lug leh isku-darka saameynaha, sida helitaanka 'center of mass' ee qaab-dhismeed adag.",
-        howItWorks: `**Tusaale Xisaabeed: Isticmaalka Substitution**\nWaxaan rabnaa inaan xallino: \`∫x√(x² + 1) dx\`. Tani waxay matali kartaa qaacido adag oo la xiriirta awoodda birta.\n\n1.  **Dooro u:** Waxaan dooraneynaa qeybta gudaha: \`u = x² + 1\`.\n2.  **Soo hel du:** \`du = 2x dx\`, taasoo la micno ah \`x dx = du/2\`.\n3.  **Ku Beddel Integral-ka:** \`∫√u (du/2) = (1/2)∫u¹ᐟ² du\`.\n4.  **Isticmaal Power Rule:** \`(1/2) * [u³ᐟ² / (3/2)] + C = (1/3)u³ᐟ² + C\`.\n5.  **Ku Celi u Qiimihiisii Hore:** \`(1/3)(x² + 1)³ᐟ² + C\`.\n\n**Fasiraad:** Tani waa anti-derivative-ka. Haddii aan rabno inaan xisaabino qiime gaar ah, waxaan isticmaali karnaa definite integral.`,
+    createCivilLesson('integration-rules', 'CASHAR 2: Qawaaniinta Aasaasiga ah ee Integration', {
+        whatIsIt: `Si loo fududeeyo habka integration-ka, waxaa jira qawaaniin aasaasi ah:
+1.  **Power Rule:** \`∫xⁿ dx = (xⁿ⁺¹)/(n+1) + C\` (halkee n ≠ -1)
+2.  **Constant Rule:** \`∫k dx = kx + C\` (halkee k yahay joogto)
+3.  **Sum/Difference Rule:** \`∫[f(x) ± g(x)] dx = ∫f(x) dx ± ∫g(x) dx\``,
+        whyIsItImportant: "Qawaaniintan waxay noo suurtagelinayaan inaan si degdeg ah u xallino qaacidooyin injineernimo oo adag, iyagoo u kala jajabinaya dhibaatooyinka waaweyn qaybo yaryar oo la maareyn karo, sida xisaabinta culeyska guud ee saaran dogob leh culeysyo kala duwan.",
+        howItWorks: `**Tusaale Xisaabeed: Culeyska Guud ee Dogob**
+Ka soo qaad in culeyska ku qaybsan dogob lagu matalo shaqadan: \`f(x) = 3x² + 2x + 5\` N/m.
+Si loo helo qaacidada culeyska guud, waxaan integreynaynaa shaqadan:
+\`Culeyska Guud = ∫(3x² + 2x + 5) dx\`
+
+1.  **Kala Jar (Sum Rule):** \`= ∫3x² dx + ∫2x dx + ∫5 dx\`
+2.  **Isticmaal Power & Constant Rules:** \`= 3(x³/3) + 2(x²/2) + 5x + C\`
+3.  **Fududee:** \`= x³ + x² + 5x + C\`
+
+Tani waa qaacidada guud ee culeyska.`,
+        examples: `**Tusaale Dhismaha:**
+Marka aad xisaabinayso birta la bixiyay tiir, waxaad u baahan tahay inaad isku dartaa dhammaan qaybaha tiirka. Sidaas oo kale, guriga aad dhisayso, ma isku darsan kartid dhammaan qalabka si kooban. Waa inaad isku dartaa birta, simenta, iyo miroka si gooni gooni ah, kadibna aad isku-darto wadartooda.`,
         quiz: [
             {
-                question: "Isticmaal Power Rule for integration, waa maxay ∫x³ dx?",
-                options: ["3x² + C", "x⁴/4 + C", "4x⁴ + C", "x³/3 + C"],
-                correctAnswer: "x⁴/4 + C",
-                explanation: "Sida ku cad Power Rule, n=3, markaa integral-ku waa xⁿ⁺¹/(n+1) = x⁴/4 + C."
+                question: "Isticmaal Power Rule, waa maxay ∫x⁴ dx?",
+                options: ["4x³ + C", "x⁵ + C", "x⁵/5 + C", "5x⁵ + C"],
+                correctAnswer: "x⁵/5 + C",
+                explanation: "Sida ku cad Power Rule, n=4, markaa integral-ku waa xⁿ⁺¹/(n+1) = x⁵/5 + C."
+            },
+            {
+                question: "Waa maxay ∫(6x + 7) dx?",
+                options: ["6x² + 7x + C", "3x² + 7x + C", "6", "3x² + 7 + C"],
+                correctAnswer: "3x² + 7x + C",
+                explanation: "∫6x dx = 6(x²/2) = 3x². ∫7 dx = 7x. Marka la isku-daro, waa 3x² + 7x + C."
             }
         ]
     }),
-    createCivilLesson('integration-area-volume', 'CASHAR 3: Xisaabinta Bedka iyo Mugga', {
-        whatIsIt: "Mid ka mid ah adeegsiyada ugu awoodda badan ee integration-ka waa awoodda lagu xisaabiyo bedka qaababka aan joogtada ahayn iyo mugga walxaha adag (solids of revolution).",
-        whyIsItImportant: `Injineernimada madaniga, tan waxaa loo isticmaalaa in lagu xisaabiyo:\n- Mugga ciidda la qodayo ama la buuxinayo.\n- Mugga shamiitada looga baahan yahay dhismo qaab adag leh.\n- Awoodda kaydinta biyaha ee biyo-xireen (dam) leh qaab aan joogto ahayn.`,
-        howItWorks: `**Tusaale Xisaabeed: Mugga Taangiga Biyaha**\nSi loo xisaabiyo mugga taangi cilindir ah oo dhererkiisu yahay 10m (H=10m) iyo gacan-kiisu 2m (R=2m), waxaan isku-darnaa bedka goobo kasta oo yar (πR²) laga bilaabo salka ilaa dusha:\n\n1. **Samee Integral-ka:** \`V = ∫₀¹⁰ π(2)² dh = ∫₀¹⁰ 4π dh\`\n2. **Soo Hel Anti-derivative-ka:** Anti-derivative-ka \`4π\` (oo ah joogto) waa \`4πh\`.\n3. **Qiimee:** \`[4πh]₀¹⁰ = 4π(10) - 4π(0) = 40π\`.\n4. **Xisaabi:** \`V = 40π ≈ 125.66 m³\`.\n\n**Fasiraad:** Marka la ogaado mugga saxda ah, injineerku wuxuu si sax ah u qiyaasi karaa kharashka agabka wuxuuna hubin karaa in qaab-dhismeedku buuxinayo shuruudaha loo baahan yahay, sida inuu hayo 125.66 mitir cubic oo biyo ah.`,
+    createCivilLesson('definite-integral', 'CASHAR 3: Definite Integral - Xisaabinta Wadarta Xaddidan', {
+        whatIsIt: "Definite Integral waa integration leh xaddidaad (limits). Halkii laga heli lahaa qaacido guud, wuxuu na siinayaa jawaab tiro ah oo sax ah. Joomatari ahaan, wuxuu matalayaa bedka saafiga ah ee u dhexeeya qalooca shaqada iyo x-axis-ka inta u dhexeysa xadka hoose 'a' iyo kan sare 'b'.",
+        whyIsItImportant: "Waxay muhiim u tahay in la helo jawaabo tiro ah oo sax ah oo loo isticmaali karo naqshadaynta dhabta ah, sida ogaanshaha wadarta culeyska saaran dogob dhererkiisu yahay 10m, ama tirada saxda ah ee agabka loo baahan yahay.",
+        howItWorks: `**Qaacidada Xisaabta:**
+\`∫ₐᵇ f(x) dx = [F(x)]ₐᵇ = F(b) - F(a)\`
+
+**Tusaale Xisaabeed: Birta Loo Baahan Yahay Tiir**
+Haddii birta loo baahan yahay halkii mitir ee tiir lagu matalo \`f(x) = 2x + 1\` (kg/m), imisa kg ayaa looga baahan yahay tiir dhererkiisu yahay 10m?
+1.  **Samee Definite Integral:** \`∫₀¹⁰ (2x + 1) dx\`
+2.  **Soo Hel Anti-derivative:** \`[x² + x]\`
+3.  **Qiimee inta u dhaxaysa xadka (0 ilaa 10):** \`= [x² + x]₀¹⁰\`
+4.  **Ka Jar (F(b) - F(a)):** \`= (10² + 10) - (0² + 0) = (100 + 10) - 0 = 110 kg\`
+
+**Fasiraad:** Waxaa loo baahan yahay 110 kg oo bir ah tiirkan.`,
+        examples: `Marka aad rabto inaad ogaato inta lacag ah aad ku bixineyso mushaharka 6 bilood, waxaad isticmaali doontaa definite integral si aad u hesho wadarta guud ee xaddidan.`,
         quiz: [
             {
-                question: "Sidee loo helaa mugga shay adag oo la abuuray iyadoo lagu wareejiyay qalooca y=f(x) agagaarka x-axis-ka laga bilaabo a ilaa b?",
-                options: ["∫ₐᵇ f(x) dx", "∫ₐᵇ π[f(x)]² dx", "2π ∫ₐᵇ xf(x) dx", "π ∫ₐᵇ f(x) dx"],
-                correctAnswer: "∫ₐᵇ π[f(x)]² dx",
+                question: "Xisaabi ∫₁³ 3x² dx.",
+                options: ["8", "26", "27", "1"],
+                correctAnswer: "26",
+                explanation: "Anti-derivative-ka waa x³. Marka la qiimeeyo: F(3) - F(1) = 3³ - 1³ = 27 - 1 = 26."
+            },
+            {
+                question: "Maxay noqonaysaa natiijada definite integral?",
+                options: ["Shaqo cusub + C", "Tiro sax ah", "Qiyaas", "Lama ogaan karo"],
+                correctAnswer: "Tiro sax ah",
+                explanation: "Definite integral wuxuu had iyo jeer bixiyaa qiime tiro ah oo matalaya wadarta guud, bedka, ama mugga inta u dhexeysa xadka la bixiyay."
+            }
+        ]
+    }),
+    createCivilLesson('integration-area-volume', 'CASHAR 4: Xisaabinta Bedka iyo Mugga ee Dhismaha', {
+        whatIsIt: "Integration-ka waxaa si toos ah loogu dabaqaa xisaabinta bedka qaababka aan joogtada ahayn iyo mugga walxaha adag, kuwaasoo aan lagu xisaabin karin qaacidooyinka joomatari ee caadiga ah.",
+        whyIsItImportant: `Injineernimada madaniga, tan waxaa loo isticmaalaa in lagu xisaabiyo:
+- Mugga ciidda la qodayo ama la buuxinayo mashruuc waddo.
+- Mugga shamiitada looga baahan yahay dhismo qaab adag leh sida biyo-xireen.
+- Awoodda kaydinta biyaha ee taangi leh qaab aan joogto ahayn.`,
+        howItWorks: `**Tusaale 1: Xisaabinta Bedka Daqaad**
+Daqaad leh qaab qaloocan oo lagu matalay \`f(x) = x²\`. Waxaan rabnaa bedka u dhexeeya x=0 iyo x=5 mitir.
+\`Bedka (Area) = ∫₀⁵ x² dx\`
+\`= [x³/3]₀⁵ = (5³/3) - (0³/3) = 125/3 ≈ 41.67 m²\`
+
+**Tusaale 2: Xisaabinta Mugga Weer**
+Weer cilindir ah oo gacan-kiisu yahay 2m (r=2), dhererkiisuna 10m (h=10).
+\`Mugga (Volume) = ∫₀¹⁰ (Bedka Goobada) dh = ∫₀¹⁰ πr² dh\`
+\`= ∫₀¹⁰ π(2)² dh = ∫₀¹⁰ 4π dh\`
+\`= [4πh]₀¹⁰ = 4π(10) - 4π(0) = 40π ≈ 125.66 m³\`
+`,
+        examples: `Marka aad rabto inaad ogaato inta sonkor ah ee aad ku buuxin karto bakoor weyn oo qaabkiisu aanu joogto ahayn, waxaad isticmaali doontaa integration si aad u xisaabiso mugga bakooriga.`,
+        quiz: [
+            {
+                question: "Waa maxay bedka u dhexeeya qalooca y=x laga bilaabo x=0 ilaa x=4?",
+                options: ["4", "16", "8", "2"],
+                correctAnswer: "8",
+                explanation: "Bedka = ∫₀⁴ x dx = [x²/2]₀⁴ = (4²/2) - (0²/2) = 16/2 = 8."
+            },
+            {
+                question: "Si loo helo mugga shay adag oo lagu abuuray iyadoo lagu wareejiyay qalooca y=f(x) agagaarka x-axis-ka, qaacidee la isticmaalaa?",
+                options: ["∫ πf(x) dx", "∫ 2πf(x) dx", "∫ π[f(x)]² dx", "∫ [f(x)]² dx"],
+                correctAnswer: "∫ π[f(x)]² dx",
                 explanation: "Kani waa 'Disk Method'. Waxaan isku-darnaa mugga saxanno (disks) yaryar oo leh gacan f(x) iyo dhumuc dx."
-            }
-        ]
-    }),
-    createCivilLesson('integration-applications-construction', 'CASHAR 4: Isticmaalka Integration-ka ee Dhismaha', {
-        whatIsIt: "Casharkani wuxuu muujinayaa sida fikradaha integration-ka loogu dabaqo si loo xalliyo dhibaatooyin kala duwan oo la taaban karo oo dhismaha ah, sida xisaabinta culeyska guud, mugga agabka, iyo xitaa shaqada la qabtay.",
-        whyIsItImportant: "Integration-ku wuxuu injineerka siinayaa awood uu ku xisaabiyo tirooyinka guud ee ka dhasha qaybin aan sinnayn, taasoo ah xaalad caadi ah oo laga helo dhibaatooyinka dhabta ah ee adduunka.",
-        howItWorks: `**Tusaale Xisaabeed: Shaqada Loo Baahan Yahay In Biyo Lagu Saaro**\nTaangi cilindir ah (gacan=2m, joog=5m) ayaa biyo ka buuxaan. Imisa shaqo (work) ayaa loo baahan yahay si biyaha oo dhan looga saaro dusha sare ee taangiga? (Cufnaanta biyuhu waa 1000 kg/m³, cufisjiidadkuna waa 9.8 m/s²).\n\n1. **Fikirka:** Waxaan ka fekereynaa inaan biyaha u saarno sidii saxanno (disks) yaryar oo dhumucdoodu tahay 'dy'.\n2. **Mugga Saxanka:** \`dV = πr² dy = 4π dy\`\n3. **Culeyska Saxanka:** \`dF = (cufnaan)(g)(mug) = (1000)(9.8)(4π dy) = 39200π dy\`\n4. **Masaafada La Saaraayo:** Saxan kasta oo jooggiisu yahay 'y' waa in la saaraa masaafada \`(5-y)\`.\n5. **Shaqada Saxanka:** \`dW = dF × masaafada = 39200π(5-y) dy\`\n6. **Samee Integral-ka Shaqada Guud:**\n   \`W = ∫₀⁵ 39200π(5-y) dy = 39200π [5y - y²/2]₀⁵\`\n7. **Qiimee:** \`39200π [(25 - 25/2) - 0] = 39200π (12.5) ≈ 1,539,380 Joules\`.\n\n**Fasiraad:** Waxaa loo baahan yahay qiyaastii 1.54 Milyan oo Joules oo tamar ah si taangiga loo faaruqiyo.`,
-        quiz: [
-            {
-                question: "Haddii xoogga loo baahan yahay in lagu riixo shay masaafada x uu yahay F(x) = 3x², imisa shaqo (work) ayaa la qabtay marka shayga laga raro x=0 ilaa x=2?",
-                options: ["6 J", "8 J", "12 J", "4 J"],
-                correctAnswer: "8 J",
-                explanation: "Shaqadu waa integral-ka xoogga: W = ∫₀² 3x² dx = [x³]₀² = 2³ - 0³ = 8 Joules."
             }
         ]
     })
 ];
 
 const transcendental_functions = [
-    createCivilLesson('exponential-logarithmic-functions', 'Shaqooyinka Exponential iyo Logarithmic', {
-        whatIsIt: "Shaqooyinka Exponential iyo Logarithmic waxay ka mid yihiin shaqooyinka ugu muhiimsan ee calculus-ka. Shaqooyinkan waxaa lagu isticmaalaa dhinacyo kala duwan oo dhismaha.",
-        whyIsItImportant: "Qorsheynta Kaydka Tamarta Guryaha: Marka aad qorsheynayso guri,waxaad u baahan tahay inaad hisaabiso inta tamar ah ee gurigu uu kaydinayo. Shaqooyinka exponential waxay kuu caawin doonaan hisaabidaas.",
-        howItWorks: "Tamarta kaydsan: `T(t) = T₀ × e^(-kt)`\nHalkee:\n- `T(t)` = Tamarta kaydsan marka t\n- `T₀` = Tamarta bilowga\n- `k` = Constant\n- `e` = Numberka exponential (≈ 2.718)",
-        examples: "Haddii gurigu leeyahay tamar 1000W oo ay kaydsanayso si exponential ah, 2 saacadood kadib:\n`T(2)= 1000 × e^(-0.1×2) = 1000 × e^(-0.2) ≈ 819W`",
-        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Qorsheynta nidaamka kaydka tamarta\n• Hisaabida khasaaraha tamarta\n• Qorsheynta diyaaradaha guryaha" }
+    createCivilLesson('exponential-functions', 'CASHAR 1: Shaqooyinka Exponential (eˣ)', {
+        whatIsIt: "Shaqada Exponential (eˣ) waa shaqo ay ku kororto ama ku yaraato qiimaheeda si is-dhaaf ah marka la eego qiimaheeda hadda. `e` waa tiro joogto ah oo xisaabeed (qiyaastii 2.71828) oo ah salka logarithm-ka dabiiciga ah.",
+        whyIsItImportant: "Waxay muhiim u tahay moodeelaynta dhacdooyinka dabiiciga ah ee injineernimada. Tusaale ahaan, sida kuleylku uga baxo dhismo, sida ciidda biyuhu uga baxaan (consolidation), ama sida walxaha wasakhaysan ay ugu baaba'aan biyaha. Dhammaan kuwani waxay raacaan qaab exponential ah.",
+        howItWorks: `**Tusaale Xisaabeed: Qaboojinta Dhismaha**
+Heerkulka gudaha dhismo wuxuu raacayaa qaacidada qaboojinta Newton: \`T(t) = Tₐ + (T₀ - Tₐ)e^(-kt)\`
+Halkee:
+- T(t) = Heerkulka wakhti 't'
+- Tₐ = Heerkulka dibadda (Ambient)
+- T₀ = Heerkulka bilowga
+- k = Xawaaraha qaboojinta (constant)
+
+**Xaalad:**
+Guri heerkulkiisu yahay 25°C (T₀) ayaa la damiyay kuleyliyaha, halka heerkulka dibaddu yahay 10°C (Tₐ). Haddii k=0.1 saacaddii, waa maxay heerkulka guriga 3 saacadood ka dib?
+
+\`\`\`
+1. Geli qiimayaasha: T(3) = 10 + (25 - 10)e^(-0.1 * 3)
+2. Fududee: T(3) = 10 + 15 * e^(-0.3)
+3. Xisaabi e^(-0.3): e^(-0.3) ≈ 0.7408
+4. Xisaabi natiijada: T(3) = 10 + 15 * 0.7408 = 10 + 11.112 ≈ 21.11°C
+\`\`\`
+**Fasiraad:** 3 saacadood ka dib, heerkulka gurigu wuxuu hoos ugu dhici doonaa qiyaastii 21.11°C. Tani waxay muhiim u tahay naqshadaynta nidaamyada kuleylinta iyo qaboojinta (HVAC).`,
+        quiz: [
+            {
+                question: "Haddii qiimaha 'k' ee qaacidada qaboojinta uu weyn yahay, maxay taasi ka dhigan tahay?",
+                options: ["Gurigu si tartiib ah ayuu u qaboobayaa", "Gurigu si degdeg ah ayuu u qaboobayaa", "Heerkulku isma beddelayo", "Lama ogaan karo"],
+                correctAnswer: "Gurigu si degdeg ah ayuu u qaboobayaa",
+                explanation: "Qiimaha 'k' ee weyn wuxuu kordhiyaa heerka qaboojinta, taasoo la micno ah in kuleylku si dhaqso ah uga baxayo dhismaha."
+            }
+        ]
     }),
-    createCivilLesson('trig-sine-cosine', 'Shaqooyinka Trigonometric - Sine iyo Cosine', {
-        whatIsIt: "Shaqooyinka Trigonometric waxaa lagu isticmaalaa xisaabinta xoogagga kala-socda (oscillating forces) ee ku dhaqma dhismooyinka.",
-        whyIsItImportant: "Qorsheynta Dhismo Xoogagga Daandaansiinta Ku Dhaqma: Marka aad dhisayso dhismo ku yaal goob daandaansiinta ah (sida xeebaha), waxaad u baahan tahay inaad xisaabiso xoogagga kala-socda ee biyaha.",
-        howItWorks: "Xoogga biyaha: `F(t) = A × sin(ωt + φ)`\nHalkee:\n- `A` = Xoogga ugu weyn\n- `ω` = Xawaaraha kala-socda\n- `t` = Wakhtiga\n- `φ` = Xagasha bilowga",
-        examples: "Dhismo ku yaal xeebta, xoogga biyaha:\n`F(t)= 5000 × sin(2πt + π/4)`\nWakhti t=2, xooggu waa:\n`F(2)= 5000 × sin(4π + π/4) ≈ 3536N`",
-        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Dhisidda dhismooyinka xeebaha\n• Qorsheynta kannyooyinka biyaha\n• Sahaminta xoogagga daandaansiinta" }
+    createCivilLesson('logarithmic-functions', 'CASHAR 2: Shaqooyinka Logarithmic (ln x)', {
+        whatIsIt: "Shaqada Logarithmic waa lidka (inverse) shaqada exponential. Waxay ka jawaabtaa su'aasha: 'Awood intee le'eg ayaa loo baahan yahay in lagu koriyo salka (e) si loo helo tiro gaar ah?'. `ln(x)` waxaa loo isticmaalaa in lagu cabbiro dhacdooyin baaxaddoodu aad u kala duwan tahay.",
+        whyIsItImportant: "Injineernimada, waxaa loo isticmaalaa cabbirka dhulgariirka (Richter scale), heerka sanqadha (decibels), iyo xisaabinta wakhtiga ay qaadanayso in geeddi-socod gaar ah uu dhammaado, sida adkaanshaha ciidda (soil consolidation).",
+        howItWorks: `**Tusaale Xisaabeed: Wakhtiga Adkaanshaha Ciidda**
+Wakhtiga ay qaadanayso in ciiddu ay gaarto heer go'an oo adkaansho ah waxaa lagu qiyaasi karaa: \`t = (1/k) * ln(C₀/C(t))\`
+Halkee:
+- t = Wakhtiga
+- k = Xawaaraha adkaanshaha (constant)
+- C₀ = Cadaadiska biyaha ee bilowga
+- C(t) = Cadaadiska biyaha ee wakhti 't'
+
+**Xaalad:**
+Lakab dhoobo ah oo ku hoos jira aasaas cusub wuxuu leeyahay cadaadis biyo bilow ah (C₀) oo ah 400 kPa. Haddii k=0.02 bishii, intee in le'eg ayay qaadanaysaa in cadaadisku hoos ugu dhaco 50 kPa (C(t))?
+
+\`\`\`
+1. Geli qiimayaasha: t = (1/0.02) * ln(400 / 50)
+2. Fududee: t = 50 * ln(8)
+3. Xisaabi ln(8): ln(8) ≈ 2.079
+4. Xisaabi natiijada: t = 50 * 2.079 ≈ 103.95 bilood
+\`\`\`
+**Fasiraad:** Waxay qaadan doontaa qiyaastii 104 bilood (ku dhowaad 8.7 sano) in ciiddu ay gaarto heerkan adkaanshaha. Aqoontani waxay muhiim u tahay qorsheynta dhismaha muddada dheer.`,
+        quiz: [
+            {
+                question: "Shaqada logarithmic, marka qiimaha 'x' uu kordho, maxaa ku dhaca ln(x)?",
+                options: ["Si degdeg ah ayuu u kordhayaa", "Si tartiib ah ayuu u kordhayaa", "Wuu yaraanayaa", "Isma beddelayo"],
+                correctAnswer: "Si tartiib ah ayuu u kordhayaa",
+                explanation: "Kororka ln(x) wuu gaabiyaa marka x uu weynaado. Tusaale ahaan, farqiga u dhexeeya ln(10) iyo ln(1) aad ayuu uga weyn yahay kan u dhexeeya ln(100) iyo ln(91)."
+            }
+        ]
     }),
-    createCivilLesson('inverse-trig-functions-roof', 'Shaqooyinka Inverse Trigonometric', {
-        whatIsIt: "Shaqooyinka Inverse Trigonometric waxay noo celinayaan xagasha marka aan ognahay qiimaha sine, cosine, ama tangent.",
-        whyIsItImportant: "Qorsheynta Saqafka Qaloocan: Marka aad dhisayso saqaf qaloocan, waxaad u baahan tahay inaad ogaato xagasha ugu fiican si aad u yareysid isticmaalka birta.",
-        howItWorks: "Xagal saqaf: `θ = arcsin(h/L)`\nHalkee:\n- `h` = Joogga saqafka\n- `L` = Dhererka birta\n- `θ` = Xagalka saqafka",
-        examples: "Saqaf leh joog 3m iyo dherer 5m:\n`θ= arcsin(3/5) = arcsin(0.6) ≈ 36.87°`",
-        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Qorsheynta saqafyada qaloocan\n• Dhisidda kannyooyinka qaloocan\n• Qaab-dhismeedka birta qaloocan" }
+    createCivilLesson('trigonometric-functions', 'CASHAR 3: Shaqooyinka Trigonometric (sin x, cos x)', {
+        whatIsIt: "Shaqooyinka Trigonometric (Sine iyo Cosine) waxay qeexaan dhaqdhaqaaq wareegsan oo soo noqnoqda (periodic motion). Waxay muhiim u yihiin moodeelaynta dhacdooyin kasta oo leh qaab hirar ah, sida gariirka, hirarka biyaha, iyo culeysyada isbedbeddela.",
+        whyIsItImportant: "Waxay fure u yihiin falanqaynta firfircoon (dynamic analysis) ee qaab-dhismeedyada. Dhismayaasha dhaadheer waxay la kulmaan gariir ka dhasha dabaysha, buundooyinkuna waxay la kulmaan gariir ka dhasha gaadiidka. Shaqooyinkan waxay noo oggolaanayaan inaan saadaalino dhaqankaas si aan u naqshadeyno dhismayaal adkeysi u leh.",
+        howItWorks: `**Tusaale Xisaabeed: Gariirka Buundada**
+Gariirka buundo waxaa lagu matali karaa: \`F(t) = A * sin(ωt + φ)\`
+Halkee:
+- F(t) = Xoogga wakhti 't'
+- A = Baaxadda gariirka (Amplitude)
+- ω = Xawaaraha xagasha (Angular frequency)
+- φ = Wejiga bilowga (Phase angle)
+
+**Xaalad:**
+Buundo waxay la kulantay gariir baaxaddiisu tahay 50 kN (A), xawaarihiisuna yahay 0.8 rad/s (ω), iyadoo aan lahayn weji bilow ah (φ=0). Waa maxay xoogga saaran buundada 10 ilbiriqsi ka dib?
+
+\`\`\`
+1. Geli qiimayaasha: F(10) = 50 * sin(0.8 * 10)
+2. Fududee: F(10) = 50 * sin(8)
+3. Xisaabi sin(8): sin(8) ≈ 0.989 (Hubi in calculator-kaagu ku jiro 'radians')
+4. Xisaabi natiijada: F(10) = 50 * 0.989 ≈ 49.47 kN
+\`\`\`
+**Fasiraad:** 10 ilbiriqsi ka dib, xoogga gariirku wuxuu ku dhow yahay baaxaddiisii ugu sarreysay. Fahamka xoogaggan isbedbeddelaya waxay muhiim u tahay ka hortagga daalka birta (metal fatigue).`,
+        quiz: [
+            {
+                question: "Maxaa dhacaya haddii xawaaraha xagasha (ω) ee gariirka uu la mid noqdo xawaaraha dabiiciga ah ee buundada?",
+                options: ["Gariirku wuu istaagayaa", "Waxba isma beddelayaan", "Waxaa dhacaya 'Resonance', gariirkuna si halis ah ayuu u weynaanayaa", "Buundadu way adkaanaysaa"],
+                correctAnswer: "Waxaa dhacaya 'Resonance', gariirkuna si halis ah ayuu u weynaanayaa",
+                explanation: "Resonance waa dhacdo halis ah oo keeni karta burbur, sida kii ku dhacay Buundada Tacoma Narrows."
+            }
+        ]
     }),
-    createCivilLesson('calculus-of-transcendentals', 'Differentiation iyo Integration ee Shaqooyinka Transcendental', {
-        whatIsIt: "Shaqooyinka Transcendental waxaa loo isticmaali karaa differentiation iyo integration si loo xalliyo dhibaatooyinka dhabta ah ee dhismaha.",
-        whyIsItImportant: "Xisaabinta Culeyska Saqaf Qaloocan: Waxaad rabtaa inaad ogaato culeyska guud ee saqaf qaloocan.",
-        howItWorks: "Culeyska saqaf: `w(x) = w₀ × cos(πx/L)`\nCuleyska guud: `W = ∫ w₀ × cos(πx/L) dx`",
-        examples: "Saqaf leh dherer 10m, culeys 50kg/m:\n`W = ∫₀¹⁰ 50 × cos(πx/10) dx`\n`= [50 × (10/π) × sin(πx/10)]` laga bilaabo 0 ilaa 10\n`= (500/π) × [sin(π) - sin(0)] = (500/π) × [0 - 0] = 0 kg`\nTani waxay muujineysaa in xoogga saafiga ah (net force) ee culeyskan simmetrical-ka ah uu yahay eber.",
-        mainParts: { title: "Goorta Loo Baahanyahay", content: "• Xisaabinta culeyska qaloocan\n• Qorsheynta saqafyada geesinka ah\n• Hisaabida birta la bixiyay" }
+// FIX: Corrected syntax errors within the howItWorks template literal and removed an extra argument from the function call.
+    createCivilLesson('inverse-trigonometric-functions', 'CASHAR 4: Shaqooyinka Inverse Trigonometric (arcsin x, iwm.)', {
+        whatIsIt: "Shaqooyinka Inverse Trigonometric waxay sameeyaan shaqada lidka ku ah tan trigonometric. Haddii aad taqaan saamiga dhinacyada saddex-xagal, shaqooyinkani waxay ku siinayaan xagasha. Tusaale: `arcsin(0.5)` waxay ku weydiinaysaa 'waa maxay xagasha sine-keedu yahay 0.5?', jawaabtuna waa 30°.",
+        whyIsItImportant: "Waxay lagama maarmaan u yihiin xallinta joometeriga ee naqshadeynta. Marka la naqshadeynayo jiirada waddo, saqafka dhismo, ama xagasha biraha isku-xirka (truss members), waxaan u baahanahay inaan helno xagasha saxda ah ee ku saleysan cabbirrada la rabo.",
+        howItWorks: `**Tusaale Xisaabeed: Naqshadaynta Jiirada Waddo (Ramp)**
+Waddo loogu talagalay dadka naafada ah waa inaysan lahaan jiirad ka badan xagal gaar ah. Waxaan rabnaa inaan dhisno waddo kor u kacaysa 1 mitir (h) masaafo toosan oo ah 12 mitir (L). Waa maxay xagasha jiirada (θ)?
+
+1. **Aqoonso Shaqada:** Waxaan haynaa dhinaca ka soo horjeeda (h) iyo kan ku dhow (L). Marka waxaan isticmaaleynaa \`arctan\`.
+2. **Qaacidada:** \`θ = arctan(h/L)\`
+3. **Geli qiimayaasha:** \`θ = arctan(1 / 12)\`
+4. **Fududee:** \`θ = arctan(0.0833)\`
+5. **Xisaabi:** \`θ ≈ 4.76°\`
+
+**Fasiraad:** Xagasha jiiradu waa 4.76 darajo. Injineerku wuxuu markaa la barbar dhigayaa xeerarka dhismaha si loo hubiyo in jiiradani ay tahay mid la oggol yahay oo badbaado leh.`,
+        quiz: [
+            {
+                question: "Birta isku-xirka (truss member) ee buundo waxay leedahay dherer (hypotenuse) ah 10m waxayna kor u kacaysaa 6m (vertical). Waa maxay xagasha ay dhulka la samaynayso?",
+                options: ["arcsin(10/6)", "arccos(6/10)", "arcsin(6/10)", "arctan(6/10)"],
+                correctAnswer: "arcsin(6/10)",
+                explanation: "Waxaan haynaa dhinaca ka soo horjeeda (6m) iyo hypotenuse (10m). Shaqada isku xirta labadan waa Sine. Sidaa darteed, si aan u helno xagasha, waxaan isticmaaleynaa arcsin."
+            }
+        ]
     })
 ];
 
@@ -451,7 +613,7 @@ export const civilEngineeringDiscipline: Discipline = {
 
 **2. Kiiska Fashilka: Burburka Jidka Lugta ee Hyatt Regency (1981)**
 - **Dhacdada:** Laba jid oo lugayn ah oo is dul saarnaa oo ku yaallay hoolka hoteelka Hyatt Regency ee Kansas City ayaa burburay, waxaana ku dhintay 114 qof. Sababtu waxay ahayd isbeddel yar oo naqshadda lagu sameeyay xilligii dhismaha oo ku saabsanaa biraha (hanger rods) sitay jidadka.
-- **Mabda'a Injineernimada:** Tani waa tusaale naxdin leh oo ku saabsan fashil ka dhashay **shear stress** iyo **bearing stress** oo xad-dhaaf ah oo ku yimid isku xirka. Naqshaddii asalka ahayd waxay isticmaaleysay hal bir oo dheer oo isku xireysay labada jidba, laakiin naqshadda la dhisay waxay isticmaashay laba bir oo kala go'an, taasoo labanlaabtay culeyska saaran lowska (nut) iyo alwaaxa (washer) ee birta sare. Culeyskani wuxuu dhaafiyay awoodda **shear strength** ee alwaaxa, taasoo keentay in lowsku uu ka duso, kaddibna uu burburku dhaco. Casharku waa sida ay muhiim u tahay in si faahfaahsan loo falanqeeyo isku xirka (connections) iyo sida culeysyadu ugu gudbaan, maxaa yeelay waa meelaha ugu nugul qaab-dhismeedka.
+- **Mabda'a Injineernimada:** Tani waa tusaale naxdin leh oo ku saabsan fashil ka dhashay **shear stress** iyo **bearing stress** oo xad-dhaaf ah oo ku yimid isku xirka. Naqshaddii asalka ahayd waxay isticmaaleysay hal bir oo dheer oo isku xireysay labada jidba, laakiin naqshadda la dhisay waxay isticmaashay laba bir oo kala go'an, taasoo labanlaabay culeyska saaran lowska (nut) iyo alwaaxa (washer) ee birta sare. Culeyskani wuxuu dhaafiyay awoodda **shear strength** ee alwaaxa, taasoo keentay in lowsku uu ka duso, kaddibna uu burburku dhaco. Casharku waa sida ay muhiim u tahay in si faahfaahsan loo falanqeeyo isku xirka (connections) iyo sida culeysyadu ugu gudbaan, maxaa yeelay waa meelaha ugu nugul qaab-dhismeedka.
 
 **3. Kiiska Guusha: Dhismaha Burj Khalifa**
 - **Guusha:** Dhismaha ugu dheer adduunka, Burj Khalifa, wuxuu tusaale cajiib ah u yahay sida loo isticmaalo mabaadi'da Awoodda Walxaha si loo gaaro wax aan horay loo arag. Wuxuu adeegsadaa nidaam qaab-dhismeed "buttressed core".

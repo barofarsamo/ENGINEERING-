@@ -23,14 +23,12 @@ const LabActivity: React.FC<LabActivityProps> = ({ lab, onGoBack }) => {
     const renderResults = () => {
         // This is where specific logic for each lab will go.
         // For now, it's a placeholder. Let's implement for Concrete Slump & Strength.
-        // FIX: Explicitly type `values` to ensure Object.values returns a typed array, preventing type errors with `isNaN`.
         const values: Record<string, number> = Object.fromEntries(
             Object.entries(inputValues).map(([key, value]) => [key, parseFloat(value)])
         );
 
-        // FIX: Using an explicit arrow function to avoid potential TypeScript issues with passing `isNaN` directly as a callback.
-        // FIX: Cast `v` to a number. `Object.values` on a `Record<string, number>` can result in `v` being of type `unknown`, which is not assignable to `isNaN`'s `number` parameter.
-        if (Object.values(values).some((v) => isNaN(v as number))) {
+        // FIX: Refactored the NaN check to be more type-safe by using Object.keys, which avoids potential type inference issues with Object.values.
+        if (Object.keys(values).some(key => isNaN(values[key]))) {
             return <p className="text-red-500">Fadlan geli qiimayaal sax ah dhammaan goobaha.</p>;
         }
 
