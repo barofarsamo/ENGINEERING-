@@ -52,11 +52,16 @@ const App: React.FC = () => {
   const [authIsLoading, setAuthIsLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    if (auth) {
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+        setAuthIsLoading(false);
+      });
+      return () => unsubscribe();
+    } else {
+      // If Firebase is not configured, just stop the loading state.
       setAuthIsLoading(false);
-    });
-    return () => unsubscribe();
+    }
   }, []);
 
 
@@ -113,13 +118,15 @@ const App: React.FC = () => {
     // Check for next module in the same chapter
     if (currentModuleIndex < selectedChapter.modules.length - 1) {
       const nextModule = selectedChapter.modules[currentModuleIndex + 1];
-      return { nextNavigationTarget: { type: 'module', data: nextModule }, isLastModuleInDiscipline: false };
+      // FIX: Use 'as const' to assert a literal type instead of a general string, matching the prop type of LessonReader.
+      return { nextNavigationTarget: { type: 'module' as const, data: nextModule }, isLastModuleInDiscipline: false };
     }
 
     // Check for next chapter in the same discipline
     if (currentChapterIndex < selectedDiscipline.levels.length - 1) {
       const nextChapter = selectedDiscipline.levels[currentChapterIndex + 1];
-      return { nextNavigationTarget: { type: 'chapter', data: nextChapter }, isLastModuleInDiscipline: false };
+      // FIX: Use 'as const' to assert a literal type instead of a general string, matching the prop type of LessonReader.
+      return { nextNavigationTarget: { type: 'chapter' as const, data: nextChapter }, isLastModuleInDiscipline: false };
     }
     
     // This is the end of the discipline

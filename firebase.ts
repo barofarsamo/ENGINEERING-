@@ -1,19 +1,35 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { initializeApp, type FirebaseApp } from "firebase/app";
+import { getAuth, type Auth } from "firebase/auth";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyB5Yt2L6a8C8Rlzitb89nsmEbqXCzEfdO0",
-  authDomain: "sahan-engineering-050680-98490.firebaseapp.com",
-  projectId: "sahan-engineering-050680-98490",
-  storageBucket: "sahan-engineering-050680-98490.firebasestorage.app",
-  messagingSenderId: "516632715466",
-  appId: "1:516632715466:web:2388fb8af8541605c71433",
-  measurementId: "G-NKH78BZ5P9"
-};
+// Add a declaration for the global window property to satisfy TypeScript
+declare global {
+    interface Window {
+        FIREBASE_CONFIG: any;
+    }
+}
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+// Firebase configuration is loaded from firebase-config.js into the window object
+const firebaseConfig = window.FIREBASE_CONFIG;
+
+// Declare app and auth which will be conditionally initialized
+let app: FirebaseApp | null = null;
+export let auth: Auth | null = null;
+
+// Check if the Firebase configuration is valid and not using placeholder values
+const isConfigValid = firebaseConfig && firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith("YOUR_");
+
+if (isConfigValid) {
+    try {
+        // If config is valid, initialize Firebase
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+    } catch (error) {
+        console.error("Firebase initialization failed:", error);
+        // Ensure auth is null if initialization fails
+        auth = null;
+    }
+} else {
+    // Log an error if the config is missing or contains placeholder values
+    console.error("Firebase config is not set or is invalid. Please create and populate firebase-config.js with your project credentials.");
+}

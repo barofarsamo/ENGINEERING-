@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import type { Lesson, Level, Module } from '../types';
 import { 
@@ -150,7 +151,8 @@ const LessonReader: React.FC<LessonReaderProps> = ({
         <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
                 <h3 className="text-2xl font-bold text-brand-primary flex items-center">
-                    {React.cloneElement(icon, { className: "h-7 w-7 mr-3 text-brand-secondary" })}
+                    {/* FIX: Cast icon to React.ReactElement<any> to resolve type inference issue with cloneElement, allowing props to be passed correctly. */}
+                    {React.cloneElement(icon as React.ReactElement<any>, { className: "h-7 w-7 mr-3 text-brand-secondary" })}
                     {title}
                 </h3>
                 <div className="flex items-center space-x-2">

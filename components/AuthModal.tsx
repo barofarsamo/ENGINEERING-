@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -44,6 +45,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     setIsLoading(true);
 
     try {
+      if (!auth) {
+        setError("Firebase configuration is missing or invalid. Authentication is disabled.");
+        setIsLoading(false);
+        return;
+      }
       if (authMode === 'login') {
         await signInWithEmailAndPassword(auth, email, password);
       } else {
@@ -62,6 +68,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     setError(null);
     setIsLoading(true);
     try {
+        if (!auth) {
+            setError("Firebase configuration is missing or invalid. Authentication is disabled.");
+            setIsLoading(false);
+            return;
+        }
         await sendPasswordResetEmail(auth, email);
         setAuthMode('resetSent');
     } catch (err: any) {

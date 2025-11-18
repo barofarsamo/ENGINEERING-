@@ -27,8 +27,8 @@ const LabActivity: React.FC<LabActivityProps> = ({ lab, onGoBack }) => {
             Object.entries(inputValues).map(([key, value]) => [key, parseFloat(value)])
         );
 
-        // FIX: Refactored the NaN check to be more type-safe by using Object.keys, which avoids potential type inference issues with Object.values.
-        if (Object.keys(values).some(key => isNaN(values[key]))) {
+        // FIX: Use Object.values and pass isNaN directly to .some() for a more robust and type-safe check for NaN values.
+        if (Object.values(values).some(isNaN)) {
             return <p className="text-red-500">Fadlan geli qiimayaal sax ah dhammaan goobaha.</p>;
         }
 

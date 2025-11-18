@@ -229,7 +229,9 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onToggleTutor, discipl
   };
 
   const handleSignOut = () => {
-    signOut(auth);
+    if (auth) {
+      signOut(auth);
+    }
     setProfileMenuOpen(false);
   };
 
