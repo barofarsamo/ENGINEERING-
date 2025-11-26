@@ -17,7 +17,13 @@ let app: FirebaseApp | null = null;
 export let auth: Auth | null = null;
 
 // Check if the Firebase configuration is valid and not using placeholder values
-const isConfigValid = firebaseConfig && firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith("YOUR_");
+// We check for existence, string type, length, and ensure it's not the default "YOUR_" placeholder
+const isConfigValid = 
+    firebaseConfig && 
+    firebaseConfig.apiKey && 
+    typeof firebaseConfig.apiKey === 'string' &&
+    firebaseConfig.apiKey.length > 20 &&
+    !firebaseConfig.apiKey.startsWith("YOUR_");
 
 if (isConfigValid) {
     try {
@@ -30,6 +36,6 @@ if (isConfigValid) {
         auth = null;
     }
 } else {
-    // Log an error if the config is missing or contains placeholder values
-    console.error("Firebase config is not set or is invalid. Please create and populate firebase-config.js with your project credentials.");
+    // Log a warning instead of error to avoid alarming users who haven't set up Firebase yet
+    console.warn("Firebase config is not set or is invalid. Authentication features will be disabled. Please create and populate firebase-config.js with your project credentials.");
 }

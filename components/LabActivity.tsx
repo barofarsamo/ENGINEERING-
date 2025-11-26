@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import type { Lab, LabInputField } from '../types';
 import { ChevronLeftIcon, BeakerIcon, ClipboardListIcon, CalculatorIcon, LightBulbIcon } from './Icons';
@@ -24,7 +25,7 @@ const LabActivity: React.FC<LabActivityProps> = ({ lab, onGoBack }) => {
         // This is where specific logic for each lab will go.
         // For now, it's a placeholder. Let's implement for Concrete Slump & Strength.
         const values: Record<string, number> = Object.fromEntries(
-            Object.entries(inputValues).map(([key, value]) => [key, parseFloat(value)])
+            Object.entries(inputValues).map(([key, value]) => [key, parseFloat(value as string)])
         );
 
         // FIX: Use Object.values and pass isNaN directly to .some() for a more robust and type-safe check for NaN values.
