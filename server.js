@@ -1,10 +1,9 @@
 
-// require('dotenv').config(); // Removed dotenv dependency as env vars are no longer used
 const express = require('express');
 const next = require('next');
 const connectDB = require('./config/db');
 
-// REPLACED: process.env.NODE_ENV with a default value
+// Explicitly set dev mode (true for development)
 const dev = true; 
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -34,8 +33,7 @@ app.prepare().then(() => {
     res.status(500).send('Something broke!');
   });
 
-
-  // REPLACED: process.env.PORT with a hardcoded port
+  // Hardcoded port
   const PORT = 3000;
   server.listen(PORT, (err) => {
     if (err) throw err;

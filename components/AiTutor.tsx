@@ -1,8 +1,6 @@
-
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleGenAI, Chat } from '@google/genai';
+import { GoogleGenAI, Chat, GenerateContentResponse } from '@google/genai';
 import { SendIcon, SparklesIcon, UserCircleIcon, XIcon } from './Icons';
-// FIX: Import ContentSection to use as a type annotation.
 import type { ChatMessage, Lesson, ContentSection } from '../types';
 
 interface AiTutorProps {
@@ -21,17 +19,28 @@ const TutorContent: React.FC<Omit<AiTutorProps, 'isOpen' | 'isMobile' | 'onClose
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+  // SECURITY NOTE: In a production app, the API key should be stored securely on the backend.
+  // The frontend should call a backend endpoint which then communicates with the Gemini API.
+  // For this educational demo, we are using a placeholder.
+  const API_KEY = "YOUR_GEMINI_API_KEY"; 
+
   useEffect(() => {
     try {
-      // REPLACED: process.env.API_KEY with a text placeholder
-      const API_KEY = "YOUR_GEMINI_API_KEY"; 
-
       if (API_KEY && API_KEY !== "YOUR_GEMINI_API_KEY") {
         const baseInstruction = 'Waxaad tahay SAHAN, macallin AI ah oo khabiir ku ah barmaamijka waxbarashada ee SAHAN Engineering. Doorkaaga ugu weyn waa inaad ardayda ka caawiso manhajka gaarka ah ee ku jira barnaamijka. Marka uu arday su\'aal ku weydiiyo, jawaabtaada la xiriiri fikradaha lagu barayo qaybaha SAHAN Engineering. U sharax mowduucyada si cad, kooban, oo sax ah. Codkaagu ha noqdo mid dhiirigelin, aqoon, iyo xirfad leh. Si adag ugu ekaaw mowduucyada sayniska, tignoolajiyada, injineernimada, iyo xisaabta. Waa inaad ku hadashaa Soomaali.';
         
         let systemInstruction = baseInstruction;
 
         if (selectedLesson) {
+            // Helper to format content sections
+            const formatContent = (sections: Record<string, ContentSection>) => 
+                Object.values(sections).map((s) => `\n### ${s.title}\n${s.content}`).join('');
+
+            const structuredText = formatContent(selectedLesson.structuredContent);
+            const additionalText = selectedLesson.additionalContent 
+                ? Object.values(selectedLesson.additionalContent).filter((s): s is ContentSection => !!s).map(s => `\n### ${s.title}\n${s.content}`).join('') 
+                : '';
+
             const lessonContext = `
 ---
 MACNAHA CASHARKA HADDA:
@@ -40,8 +49,8 @@ Isticmaaluhu wuu hadda baranayaa casharka: "${selectedLesson.title}".
 Ahmiyadaada koowaad WAA INAY ahaato casharkan. Dhammaan sharraxaadahaaga iyo jawaabahaaga ku salee faahfaahintan soo socota. Marka su'aal lagu weydiiyo, si toos ah u tixraac maaddadan si aad u bixiso caawimada ugu habboon.
 
 NUXURKA CASHARKA:
-${/* FIX: Add explicit type for 's' to resolve property access error. */ Object.values(selectedLesson.structuredContent).map((s: ContentSection) => `\n### ${s.title}\n${s.content}`).join('')}
-${/* FIX: Add explicit type for 's' to resolve property access error. */ Object.values(selectedLesson.additionalContent).filter(Boolean).map((s: ContentSection) => `\n### ${s.title}\n${s.content}`).join('')}
+${structuredText}
+${additionalText}
 ---`;
             systemInstruction += lessonContext;
         }
@@ -95,12 +104,15 @@ ${/* FIX: Add explicit type for 's' to resolve property access error. */ Object.
       setMessages(prev => [...prev, { role: 'model', text: '' }]);
 
       for await (const chunk of result) {
-        modelResponse += chunk.text;
-        setMessages(prev => {
-          const newMessages = [...prev];
-          newMessages[newMessages.length - 1] = { role: 'model', text: modelResponse };
-          return newMessages;
-        });
+        const c = chunk as GenerateContentResponse;
+        if (c.text) {
+            modelResponse += c.text;
+            setMessages(prev => {
+            const newMessages = [...prev];
+            newMessages[newMessages.length - 1] = { role: 'model', text: modelResponse };
+            return newMessages;
+            });
+        }
       }
     } catch (error) {
       console.error('Gemini API error:', error);

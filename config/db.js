@@ -3,8 +3,15 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    // REPLACED: process.env.MONGODB_URI with a placeholder text string
-    await mongoose.connect('YOUR_MONGODB_URI_HERE');
+    // Replace this string with your actual MongoDB connection string
+    const db = 'YOUR_MONGODB_URI_HERE'; 
+    
+    if (db === 'YOUR_MONGODB_URI_HERE') {
+        console.warn('MongoDB URI is not set. Database connection will fail.');
+        return;
+    }
+
+    await mongoose.connect(db);
     console.log('MongoDB Connected...');
   } catch (err) {
     console.error(err.message);
