@@ -12,6 +12,8 @@ interface AiTutorProps {
   onPromptHandled: () => void;
 }
 
+const MAX_INPUT_LENGTH = 1000; // SECURITY FIX: Limit input length to prevent abuse
+
 const TutorContent: React.FC<Omit<AiTutorProps, 'isOpen' | 'isMobile' | 'onClose'>> = ({ selectedLesson, initialPrompt, onPromptHandled }) => {
   const [chat, setChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -19,9 +21,10 @@ const TutorContent: React.FC<Omit<AiTutorProps, 'isOpen' | 'isMobile' | 'onClose
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // SECURITY NOTE: In a production app, the API key should be stored securely on the backend.
-  // The frontend should call a backend endpoint which then communicates with the Gemini API.
-  // For this educational demo, we are using a placeholder.
+  // SECURITY WARNING: 
+  // Storing API keys in frontend code is insecure. In a real production app, 
+  // this key should be moved to a backend proxy (e.g., /api/chat in server.js)
+  // to prevent extraction by malicious users.
   const API_KEY = "YOUR_GEMINI_API_KEY"; 
 
   useEffect(() => {
@@ -82,7 +85,13 @@ ${additionalText}
 
   const sendMessage = async (messageToSend?: string) => {
     const textToSend = messageToSend || input;
+    
+    // SECURITY FIX: Validate input length
     if (!textToSend.trim() || isLoading) return;
+    if (textToSend.length > MAX_INPUT_LENGTH) {
+        setMessages(prev => [...prev, { role: 'model', text: 'Cilad: Fariintu aad ayey u dheer tahay.' }]);
+        return;
+    }
 
     const userMessage: ChatMessage = { role: 'user', text: textToSend };
     setMessages(prev => [...prev, userMessage]);
@@ -178,6 +187,7 @@ ${additionalText}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Weydii su'aal..."
+            maxLength={MAX_INPUT_LENGTH}
             className="w-full pr-12 pl-4 py-3 border border-base-300 rounded-full bg-base-200 focus:ring-2 focus:ring-brand-secondary focus:outline-none"
             disabled={isLoading}
           />

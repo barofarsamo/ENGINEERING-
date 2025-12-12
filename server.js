@@ -1,10 +1,10 @@
-
 const express = require('express');
 const next = require('next');
 const connectDB = require('./config/db');
 
-// Explicitly set dev mode (true for development)
-const dev = true; 
+// SECURITY FIX: Default to Production mode (false) to prevent leaking stack traces 
+// and to ensure security headers are active. Use true only if specifically explicitly enabled.
+const dev = false; 
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
@@ -30,7 +30,8 @@ app.prepare().then(() => {
   // Custom Error Handling Middleware
   server.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send('Something broke!');
+    // SECURITY FIX: Do not leak stack traces to client
+    res.status(500).send('Internal Server Error');
   });
 
   // Hardcoded port

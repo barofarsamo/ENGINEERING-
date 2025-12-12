@@ -12,7 +12,14 @@ const Certificate: React.FC<CertificateProps> = ({ disciplineName, onGoHome }) =
   const certificateRef = useRef<HTMLDivElement>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   
-  const certificateId = useMemo(() => `SAHAN-CERT-${Date.now().toString().slice(-6)}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`, []);
+  // SECURITY FIX: Use Cryptographically Secure Random Number Generator (CSPRNG)
+  // Math.random() is predictable. window.crypto.getRandomValues is secure.
+  const certificateId = useMemo(() => {
+    const array = new Uint8Array(4);
+    window.crypto.getRandomValues(array);
+    const randomHex = Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+    return `SAHAN-CERT-${Date.now().toString().slice(-6)}-${randomHex}`;
+  }, []);
 
   const currentDate = new Date().toLocaleDateString('so-SO', {
     year: 'numeric',
@@ -39,7 +46,7 @@ const Certificate: React.FC<CertificateProps> = ({ disciplineName, onGoHome }) =
         
         // Add the image to the PDF, scaling it to fit the A4 page
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Shahaadada_${disciplineName.replace(/\s/g, '_')}.pdf`);
+        pdf.save(`Shahaadada_${disciplineName.replace(/[^a-zA-Z0-9-_]/g, '_')}.pdf`); // Sanitize filename
       })
       .catch((err) => {
         console.error('Waxbaa khaldamay, fadlan isku day mar kale.', err);

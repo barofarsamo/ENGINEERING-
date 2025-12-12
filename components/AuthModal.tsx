@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -10,6 +9,26 @@ interface AuthModalProps {
 }
 
 type AuthMode = 'login' | 'register' | 'forgotPassword' | 'resetSent';
+
+// SECURITY FIX: Generic error mapping to prevent Information Leakage (User Enumeration)
+const getSafeErrorMessage = (errorCode: string): string => {
+    switch (errorCode) {
+        case 'auth/user-not-found':
+        case 'auth/wrong-password':
+        case 'auth/invalid-credential':
+            return "Emailka ama erayga sirta ah waa qalad."; // Generic message
+        case 'auth/email-already-in-use':
+            return "Emailkan horay ayaa loo diiwaangeliyay.";
+        case 'auth/weak-password':
+            return "Erayga sirta ah waa inuu ahaadaa ugu yaraan 6 xaraf.";
+        case 'auth/invalid-email':
+            return "Fadlan geli email sax ah.";
+        case 'auth/too-many-requests':
+            return "Isku dayo badan. Fadlan sug wax yar.";
+        default:
+            return "Cilad ayaa dhacday. Fadlan isku day mar kale.";
+    }
+};
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [authMode, setAuthMode] = useState<AuthMode>('login');
@@ -57,7 +76,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       }
       handleClose(); // Close on success
     } catch (err: any) {
-      setError(err.message.replace('Firebase: ', ''));
+      // SECURITY FIX: Don't expose raw error code
+      setError(getSafeErrorMessage(err.code));
     } finally {
         setIsLoading(false);
     }
@@ -76,7 +96,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
         await sendPasswordResetEmail(auth, email);
         setAuthMode('resetSent');
     } catch (err: any) {
-        setError(err.message.replace('Firebase: ', ''));
+        // SECURITY FIX: Don't expose raw error code
+        setError(getSafeErrorMessage(err.code));
     } finally {
         setIsLoading(false);
     }
