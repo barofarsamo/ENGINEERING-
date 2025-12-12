@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI, Chat } from '@google/genai';
 import { SendIcon, SparklesIcon, UserCircleIcon, XIcon } from './Icons';
@@ -22,7 +23,10 @@ const TutorContent: React.FC<Omit<AiTutorProps, 'isOpen' | 'isMobile' | 'onClose
 
   useEffect(() => {
     try {
-      if (process.env.API_KEY) {
+      // REPLACED: process.env.API_KEY with a text placeholder
+      const API_KEY = "YOUR_GEMINI_API_KEY"; 
+
+      if (API_KEY && API_KEY !== "YOUR_GEMINI_API_KEY") {
         const baseInstruction = 'Waxaad tahay SAHAN, macallin AI ah oo khabiir ku ah barmaamijka waxbarashada ee SAHAN Engineering. Doorkaaga ugu weyn waa inaad ardayda ka caawiso manhajka gaarka ah ee ku jira barnaamijka. Marka uu arday su\'aal ku weydiiyo, jawaabtaada la xiriiri fikradaha lagu barayo qaybaha SAHAN Engineering. U sharax mowduucyada si cad, kooban, oo sax ah. Codkaagu ha noqdo mid dhiirigelin, aqoon, iyo xirfad leh. Si adag ugu ekaaw mowduucyada sayniska, tignoolajiyada, injineernimada, iyo xisaabta. Waa inaad ku hadashaa Soomaali.';
         
         let systemInstruction = baseInstruction;
@@ -42,7 +46,7 @@ ${/* FIX: Add explicit type for 's' to resolve property access error. */ Object.
             systemInstruction += lessonContext;
         }
 
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey: API_KEY });
         const newChat = ai.chats.create({
           model: 'gemini-2.5-flash',
           config: {
@@ -79,7 +83,7 @@ ${/* FIX: Add explicit type for 's' to resolve property access error. */ Object.
     }
 
     if (!chat) {
-      setMessages(prev => [...prev, { role: 'model', text: 'Cilad: Lama bilaabi karin Macallinka AI. Fadlan hubi in furahaaga API-ga si sax ah loo habeeyay.' }]);
+      setMessages(prev => [...prev, { role: 'model', text: 'Cilad: Lama bilaabi karin Macallinka AI. Fadlan ku dar furahaaga API code-ka (AiTutor.tsx).' }]);
       return;
     }
 

@@ -1,9 +1,11 @@
-require('dotenv').config();
+
+// require('dotenv').config(); // Removed dotenv dependency as env vars are no longer used
 const express = require('express');
 const next = require('next');
 const connectDB = require('./config/db');
 
-const dev = process.env.NODE_ENV !== 'production';
+// REPLACED: process.env.NODE_ENV with a default value
+const dev = true; 
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
@@ -33,7 +35,8 @@ app.prepare().then(() => {
   });
 
 
-  const PORT = process.env.PORT || 3000;
+  // REPLACED: process.env.PORT with a hardcoded port
+  const PORT = 3000;
   server.listen(PORT, (err) => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${PORT}`);
