@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, type ReactNode, type ErrorInfo } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import LessonReader from './components/LessonReader';
@@ -21,6 +21,51 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from './firebase';
 import AuthModal from './components/AuthModal';
 
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+// Error Boundary Component to catch crashes
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(_: Error): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("Uncaught error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex flex-col items-center justify-center h-screen bg-base-200 text-center p-4">
+          <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
+            <h1 className="text-2xl font-bold text-red-600 mb-4">Cilad ayaa dhacday</h1>
+            <p className="text-gray-600 mb-6">Waxaa dhacday cilad farsamo. Fadlan bogga dib u cusbooneysii si aad u sii wadato.</p>
+            <button 
+                onClick={() => window.location.reload()} 
+                className="w-full px-4 py-3 bg-brand-primary text-white font-bold rounded-lg hover:bg-brand-secondary transition-colors"
+            >
+                Dib u billow (Reload)
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 const LoadingScreen: React.FC = () => (
   <div className="flex flex-col items-center justify-center h-screen bg-base-200 text-center p-4">
     <div className="mb-4">
@@ -35,7 +80,7 @@ const LoadingScreen: React.FC = () => (
 
 type ViewMode = 'BROWSE' | 'LEARN' | 'CERTIFICATE' | 'CHAPTER_BROWSE' | 'LESSON_BROWSE' | 'TOOLS_UNIT_CONVERTER' | 'TOOLS_LOAD_CALCULATOR' | 'VIRTUAL_LAB';
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [viewMode, setViewMode] = useState<ViewMode>('BROWSE');
   const [selectedDiscipline, setSelectedDiscipline] = useState<Discipline | null>(null);
@@ -90,15 +135,6 @@ const App: React.FC = () => {
     return selectedDiscipline;
   }, [selectedDiscipline, selectedChapter, selectedModule]);
 
-  const { flatLessons } = useMemo(() => {
-    if (!disciplineForView) {
-      return { flatLessons: [] };
-    }
-    const lessons: Lesson[] = [];
-    disciplineForView.levels.forEach(l => l.modules.forEach(m => lessons.push(...m.lessons)));
-    return { flatLessons: lessons };
-  }, [disciplineForView]);
-  
   const unlockedLevels = useMemo(() => {
     if (!selectedDiscipline) return new Set<string>();
     return getUnlockedLevels(selectedDiscipline.id);
@@ -118,14 +154,12 @@ const App: React.FC = () => {
     // Check for next module in the same chapter
     if (currentModuleIndex < selectedChapter.modules.length - 1) {
       const nextModule = selectedChapter.modules[currentModuleIndex + 1];
-      // FIX: Use 'as const' to assert a literal type instead of a general string, matching the prop type of LessonReader.
       return { nextNavigationTarget: { type: 'module' as const, data: nextModule }, isLastModuleInDiscipline: false };
     }
 
     // Check for next chapter in the same discipline
     if (currentChapterIndex < selectedDiscipline.levels.length - 1) {
       const nextChapter = selectedDiscipline.levels[currentChapterIndex + 1];
-      // FIX: Use 'as const' to assert a literal type instead of a general string, matching the prop type of LessonReader.
       return { nextNavigationTarget: { type: 'chapter' as const, data: nextChapter }, isLastModuleInDiscipline: false };
     }
     
@@ -457,5 +491,13 @@ const App: React.FC = () => {
     </div>
   );
 };
+
+const App: React.FC = () => {
+    return (
+        <ErrorBoundary>
+            <AppContent />
+        </ErrorBoundary>
+    );
+}
 
 export default App;
